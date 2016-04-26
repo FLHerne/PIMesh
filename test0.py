@@ -5,7 +5,8 @@ page = open(pageTitle, 'r+')
 links = []
 
 for line in page.readlines(80):
-  line = line[:-1]
+  if line[-1] == '\n':
+    line = line[:-1]
   print(line.split(":"))
   links.append(line.split(": "))
 
