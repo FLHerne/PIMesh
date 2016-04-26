@@ -15,7 +15,7 @@ page = open(pageTitle, 'w')
 #links = [ ["Brother", "Ben"], ["Age", "42 years"], ["Favourite colour", "octarine"] ]
 
 for link in links:
-    targetFile = open(link[1], 'r+')
+    targetFile = open(link[1], 'a')
     if link[0][-3:] == " of":
 	targetFile.write(link[0][:-3])
     else:
