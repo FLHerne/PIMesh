@@ -1,4 +1,6 @@
-pageTitle = "Bill"
+import sys
+
+pageTitle = sys.argv[1]
 page = open(pageTitle, 'r+')
 links = []
 
@@ -13,9 +15,13 @@ page = open(pageTitle, 'w')
 #links = [ ["Brother", "Ben"], ["Age", "42 years"], ["Favourite colour", "octarine"] ]
 
 for link in links:
-    targetFile = open(link[1], 'w+')
-    targetFile.write(link[0])
-    targetFile.write(" of: ")
+    targetFile = open(link[1], 'r+')
+    if link[0][-3:] == " of":
+	targetFile.write(link[0][:-3])
+    else:
+      targetFile.write(link[0])
+      targetFile.write(" of")
+    targetFile.write(": ")
     targetFile.write(pageTitle)
     targetFile.write('\n')
     page.write(link[0]),
