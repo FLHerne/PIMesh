@@ -14,7 +14,7 @@ print("\x1B]0;%s\x07" % "PIMesh")
 filename = "network0.pimesh"
 
 network = EntityNetwork.from_file(filename)
-currentEntityName = "cabbage"
+current_entity = network["cabbage"]
 
 status = "Started PIMesh"
 
@@ -31,7 +31,7 @@ def printEntityList(network):
     
 def printEntityLinks(entity):
   print(str(entity))
-  return len(network[currentEntityName].links)+4
+  return len(current_entity.links)+4
   
 def printHelp():
   global status
@@ -45,7 +45,7 @@ def splitInput(userInput):
   return command, arguments
 
 def processCommand(command, arguments):
-  global quiting, viewingMode, currentEntityName, status
+  global quiting, viewingMode, current_entity, status
   status = command + ": Operation sucessful"
   try:
     if command in ["quit", "exit"]:
@@ -59,22 +59,22 @@ def processCommand(command, arguments):
       status = "Entered entity list mode"
     elif command in ["view", "vw"]:
       viewingMode = linksMode
-      currentEntityName = arguments[0]
+      current_entity = network[arguments[0]]
       status = "Entered entity view mode"
 
     elif command in ["remove", "rm"]:
       if viewingMode == linksMode:
-        network[currentEntityName].unlink(arguments[0], arguments[1])
+        current_entity.unlink(arguments[0], arguments[1])
       else:
         status = "Please enter entity view mode using 'view <entity>' and try again"
     elif command in ["add", "ad"]:
       if viewingMode == linksMode:
-        network[currentEntityName].link(arguments[0], arguments[1])
+        current_entity.link(arguments[0], arguments[1])
       else:
         status = "Please enter entity view mode using 'view <entity>' and try again"
     elif command in ["update", "ud"]:
       if viewingMode == linksMode:
-        network[currentEntityName].relink(arguments[0], arguments[1], arguments[2])
+        current_entity.relink(arguments[0], arguments[1], arguments[2])
       else:
         status = "Please enter entity view mode using 'view <entity>' and try again"
       
@@ -105,7 +105,7 @@ while not quiting:
   if viewingMode == listMode:
     usedLines = printEntityList(network)
   elif viewingMode == linksMode:
-    usedLines = printEntityLinks(network[currentEntityName])
+    usedLines = printEntityLinks(current_entity)
   elif viewingMode == helpMode:
     usedLines = printHelp()
   else:
