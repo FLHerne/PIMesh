@@ -1,37 +1,42 @@
-31a
-===
-member: flherne
-member: cedstone
-
-beige
+green
 =====
-colour of: potato
+colour of: cabbage
 
 Man in the Moon
 ===============
 favourite vegetable: cabbage
 
-green
+potato
+======
+colour: beige
+
+beige
 =====
-colour of: cabbage
+colour of: potato
 
 oyster
 ======
 
-cabbage
-=======
-colour: green
-favourite vegetable of: Man in the Moon
-
-cedstone
-========
-member of: 31a
+round
+=====
+shape of: cabbage
 
 flherne
 =======
 member of: 31a
 
-potato
-======
-colour: beige
+cedstone
+========
+member of: 31a
+
+cabbage
+=======
+shape: round
+favourite vegetable of: Man in the Moon
+colour: green
+
+31a
+===
+member: flherne
+member: cedstone
 

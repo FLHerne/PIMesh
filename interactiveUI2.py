@@ -66,7 +66,7 @@ def process_command(command, arguments):
         elif command in ["view", "vw"]:
             current_mode = Mode.links
             current_entity = network[arguments[0]]
-            status = "Entered entity view mode"
+            status = "Now viewing entity: " + arguments[0]
         elif command in ["remove", "rm"]:
             if current_mode == Mode.links:
                 current_entity.unlink(arguments[0], arguments[1])
