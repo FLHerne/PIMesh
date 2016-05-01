@@ -20,10 +20,12 @@ print("\x1B]0;%s\x07" % "PIMesh") # Set window title
 
 filename = "network0.pimesh"
 
-network = EntityNetwork.from_file(filename)
-#current_entity = network["cabbage"]
-
-status = "Started PIMesh"
+try:
+  network = EntityNetwork.from_file(filename)
+  status = "Loaded PIMesh network from file"
+except FileNotFoundError:
+  network = EntityNetwork()
+  status = "Created empty network (file not found)"
 
 
 def print_entity_list():
