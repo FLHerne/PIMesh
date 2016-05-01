@@ -27,7 +27,6 @@ status = "Started PIMesh"
 
 
 def print_entity_list():
-    #global status
     for name in network:
         print(name)
     return len(network)
@@ -35,13 +34,13 @@ def print_entity_list():
 
 def print_entity_links(entity):
     print(str(entity))
-    return len(entity.links)+4
+    return len(entity.links)+3
 
 
 def print_help():
     global status
     status = "Sorry, help not implemented yet"
-    return 1
+    return 0
 
 
 def split_input(user_input):
@@ -102,7 +101,7 @@ while not quitting:
     else:
         status = "Error: Unknown current_mode!"
 
-    used_lines += 2
+    used_lines += 3
     print("\n" * (lines - used_lines))
     status_line = " " + status + (" " * (cols - len(status) - 1))
     termcolor.cprint(status_line, attrs=['reverse'])

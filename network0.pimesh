@@ -1,29 +1,37 @@
-cedstone
-========
-member of: 31a
-
 31a
 ===
-member: cedstone
 member: flherne
+member: cedstone
 
-oyster
-======
-
-flherne
-=======
-member of: 31a
+beige
+=====
+colour of: potato
 
 Man in the Moon
 ===============
 favourite vegetable: cabbage
 
-cabbage
-=======
-favourite vegetable of: Man in the Moon
-colour: green
-
 green
 =====
 colour of: cabbage
+
+oyster
+======
+
+cabbage
+=======
+colour: green
+favourite vegetable of: Man in the Moon
+
+cedstone
+========
+member of: 31a
+
+flherne
+=======
+member of: 31a
+
+potato
+======
+colour: beige
 
