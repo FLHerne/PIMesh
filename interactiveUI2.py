@@ -8,7 +8,7 @@ from network import EntityNetwork
 
 print("\x1B[22t") # Save window title
 
-Mode = Enum('Modes', ('list', 'links', 'help'))
+Mode = Enum('Mode', ('list', 'links', 'help'))
 mode_names = {
     Mode.list: "Entity List",
     Mode.links: "Single entity view",
@@ -35,7 +35,7 @@ def print_entity_list():
 
 def print_entity_links(entity):
     print(str(entity))
-    return len(current_entity.links)+4
+    return len(entity.links)+4
 
 
 def print_help():
