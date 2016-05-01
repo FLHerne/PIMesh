@@ -1,0 +1,65 @@
+This is the full manual; you should read it!
+
+Glossary:
+
+  Entities: This tool helps you sort your data into a number of "entities". Each entity could be a person, place, date, age, quantity or category. Entities cannot be explicitly created or destroyed. All entities are logically deemed to exist, and can all be viewed in the same way. Not data is stored about entities with no links.
+
+  Links: Every entity is associated with one or more other entities using at least one "link". A Link is composed of a "tag" and a "target". A link can be created by describing the relationship in one direction, causing the inverse relationship to be automatically added to the target.
+
+  Tags: This is the first part of a link. It describes the type of relationship described by the link.  Examples might include "brother" or "home". Depending on how a link is defined, a tag may be used to describe the link in both directions, or an inverse tag may be manually specified.
+
+  Target: Every link is a reference to another "target" entity. As you create a link from the current entity to the target, the other half of the link (from the target to the current entity) is automatically added.
+
+
+
+Commands:
+
+  In the following reference, < and > are used to enclose metasyntactic variables. [ and ] refer to optional metasyntactic variables.
+  All operations on links apply to both the part to the target, and the part from the target
+  Synonyms behave in exactly the same way, and are provided for ease of learning.
+
+  add <tag>: <target> [:[inverse tag]]
+    Add a new link to the current entity, with the specified tag and target. The inverse tag will be used when displaying the other end of the link. If there is a trailing colon with no inverse tag, the links is taken to be linguistically symmetrical. if there is neither an inverse tag, nor a colon, the inverse tag is automatically set to "<tag> of". If the current tag ends with "of", it will be removed in the automatically generated inverse.
+    synonym: ad
+
+  remove <tag>: <target>
+    Remove the specified link from the current entity.
+    synonym: rm
+
+  update <tag>: <oldtarget>, <newtarget>
+    Update a tag to point to a new target
+    synonym: ud
+
+  list [tag]
+    List all entities associated with a particular tag. Ommit argument for asociation with any tag.
+    synonym: ls
+
+  view <entity>
+    View the specified entity. This works for all potential entities, even those that do not yet have any links.
+    synonym: vw
+
+  manual
+    Display this documentation.
+    synonyms: help, ?, man
+
+
+
+Examples:
+
+  vw Bill
+  ad age: 42
+  ud age: 42, 43
+  ad brother: Bert
+  ad sister: Beth :brother
+
+  vw Beth
+  ad brother: Bert :sister
+  ad lives in: puddleton :resident
+
+This sequence of commands should produce the following non-empty entities:
+
+=== Bill ===		=== Bert ===		=== Beth ===		= puddleton =		==== 43 ====
+age: 43			brother of: Bill	brother: Bert		resident: Beth		age of: Bill
+brother: Bert		sister: Beth		brother: Bill
+sister: Beth					lives in: puddleton
+
