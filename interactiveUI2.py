@@ -83,20 +83,6 @@ def process_command(command, arguments):
         status = command + ": Operation failed"
 
 
-def vertical_padding(lines):
-    output = ""
-    for i in range(lines):
-        output += "\n"
-    return output
-
-
-def horizontal_padding(cols):
-    output = ""
-    for i in range(cols):
-        output += " "
-    return output
-
-
 quitting = False
 while not quitting:
     cols, lines = shutil.get_terminal_size()
@@ -111,8 +97,9 @@ while not quitting:
         status = "Error: Unknown current_mode!"
 
     used_lines += 2
-    print(vertical_padding(lines-used_lines))
-    termcolor.cprint(" " + status + horizontal_padding(cols-len(status)-1), attrs=['reverse'])
+    print("\n" * (lines - used_lines))
+    status_line = " " + status + (" " * (cols - len(status) - 1))
+    termcolor.cprint(status_line, attrs=['reverse'])
     command, arguments = split_input(input("> "))
     process_command(command, arguments)
 
