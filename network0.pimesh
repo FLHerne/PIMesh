@@ -1,42 +1,13 @@
-green
-=====
-colour of: cabbage
-
-Man in the Moon
-===============
-favourite vegetable: cabbage
-
-potato
-======
-colour: beige
-
-beige
-=====
-colour of: potato
-
-oyster
-======
-
-round
-=====
-shape of: cabbage
-
-flherne
-=======
-member of: 31a
-
-cedstone
-========
-member of: 31a
-
 cabbage
 =======
-shape: round
-favourite vegetable of: Man in the Moon
-colour: green
+category: vegetable
 
-31a
-===
-member: flherne
-member: cedstone
+vegetable
+=========
+category of: cabbage
+category of: turnip
+
+turnip
+======
+category: vegetable
 
