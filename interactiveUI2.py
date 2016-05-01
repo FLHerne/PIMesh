@@ -27,7 +27,7 @@ status = "Started PIMesh"
 
 
 def print_entity_list():
-    global status
+    #global status
     for name in network:
         print(name)
     return len(network)
