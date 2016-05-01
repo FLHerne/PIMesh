@@ -1,14 +1,20 @@
-from network import EntityNetwork
-import shutil
 import os
+import shutil
 import termcolor
+
+from enum import Enum
+from network import EntityNetwork
 
 
 print("\x1B[22t") # Save window title
 
-MODE_LIST, MODE_LINKS, MODE_HELP = range(3)
-mode_names = ["Entity List", "Single entity view", "Documentation"]
-current_mode = MODE_LIST
+Mode = Enum('Modes', ('list', 'links', 'help'))
+mode_names = {
+    Mode.list: "Entity List",
+    Mode.links: "Single entity view",
+    Mode.help: "Documentation"
+}
+current_mode = Mode.list
 
 print("\x1B]0;%s\x07" % "PIMesh") # Set window title
 
@@ -53,27 +59,27 @@ def process_command(command, arguments):
             status = "Exiting by user request..."
             quitting = True
         elif command in ["help", "?", "man", "manual"]:
-            current_mode = MODE_HELP
+            current_mode = Mode.help
             status = "Entered help mode"
         elif command in ["list", "ls"]:
-            current_mode = MODE_LIST
+            current_mode = Mode.list
             status = "Entered entity list mode"
         elif command in ["view", "vw"]:
-            current_mode = MODE_LINKS
+            current_mode = Mode.links
             current_entity = network[arguments[0]]
             status = "Entered entity view mode"
         elif command in ["remove", "rm"]:
-            if current_mode == MODE_LINKS:
+            if current_mode == Mode.links:
                 current_entity.unlink(arguments[0], arguments[1])
             else:
                 status = "Please enter entity view mode using 'view <entity>' and try again"
         elif command in ["add", "ad"]:
-            if current_mode == MODE_LINKS:
+            if current_mode == Mode.links:
                 current_entity.link(arguments[0], arguments[1])
             else:
                 status = "Please enter entity view mode using 'view <entity>' and try again"
         elif command in ["update", "ud"]:
-            if current_mode == MODE_LINKS:
+            if current_mode == Mode.links:
                 current_entity.relink(arguments[0], arguments[1], arguments[2])
             else:
                 status = "Please enter entity view mode using 'view <entity>' and try again"
@@ -87,11 +93,11 @@ quitting = False
 while not quitting:
     cols, lines = shutil.get_terminal_size()
     os.system("clear")
-    if current_mode == MODE_LIST:
+    if current_mode == Mode.list:
         used_lines = print_entity_list()
-    elif current_mode == MODE_LINKS:
+    elif current_mode == Mode.links:
         used_lines = print_entity_links(current_entity)
-    elif current_mode == MODE_HELP:
+    elif current_mode == Mode.help:
         used_lines = print_help()
     else:
         status = "Error: Unknown current_mode!"
