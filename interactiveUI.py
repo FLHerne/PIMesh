@@ -126,19 +126,20 @@ command_add.applicable_modes = [Mode.links]
 def command_update(arguments):
     """Change the target of one of the current entity's links"""
     global current_entity
+    tag = arguments[0]
     if len(arguments) == 2:
-        if len(current_entity[arguments[0]]) > 1:
-            return 'Sorry, tag "' + arguments[0] + '" is ambiguous.'
-        if len(current_entity[arguments[0]]) < 1:
-            return 'Sorry, tag "' + arguments[0] + '" is not associated with this entity.'
-        old_target = current_entity[arguments[0]][0]
-        current_entity.relink(arguments[0], old_target, arguments[1])
-        return 'Updated link from "' + arguments[0] + ': ' + old_target.name + '" to "' + arguments[0] + ': ' + arguments[1] + '"'
+        if len(current_entity[tag]) > 1:
+            return 'Sorry, tag "' + tag + '" is ambiguous.'
+        if len(current_entity[tag]) < 1:
+            return 'Sorry, tag "' + tag + '" is not associated with this entity.'
+        old_target = current_entity[tag][0]
+        current_entity.relink(tag, old_target, arguments[1])
+        return 'Updated link from "' + tag + ': ' + old_target.name + '" to "' + tag + ': ' + arguments[1] + '"'
     else:
-        if len(current_entity[arguments[0]]) < 1 or current_entity[arguments[0]][0].name != arguments[1]:
-            return '"' + arguments[0] + ': ' + arguments[1] + '" - no such link for this entity'
-        current_entity.relink(arguments[0], arguments[1], arguments[2])
-        return 'Updated link from "' + arguments[0] + ': ' + arguments[1] + '" to "' + arguments[0] + ': ' + arguments[2] + '"'
+        if len(current_entity[tag]) < 1 or arguments[1] not in (target.name for target in current_entity[tag]):
+            return '"' + tag + ': ' + arguments[1] + '" - no such link for this entity'
+        current_entity.relink(tag, arguments[1], arguments[2])
+        return 'Updated link from "' + tag + ': ' + arguments[1] + '" to "' + tag + ': ' + arguments[2] + '"'
     
 
 command_update.names = ['update', 'ud']
