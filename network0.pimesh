@@ -1,18 +1,24 @@
-green
-=====
-colour of: cabbage
+cedstone
+========
+
+vegetable
+=========
+category of: cabbage
+category of: turnip
 
 turnip
 ======
 category: vegetable
 
-vegetable
-=========
-category of: turnip
-category of: cabbage
-
 cabbage
 =======
-colour: green
 category: vegetable
+colour: green
+
+cabage
+======
+
+green
+=====
+colour of: cabbage
 

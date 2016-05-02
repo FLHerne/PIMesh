@@ -18,14 +18,14 @@ current_mode = Mode.list
 
 print("\x1B]0;%s\x07" % "PIMesh") # Set window title
 
-filename = "network0.pimesh"
+filename = "network0.pimesh"            # Currently fixed filename - should it really be an argument when starting the script?
 
 try:
-network = EntityNetwork.from_file(filename)
-status = "Loaded PIMesh network from file"
+    network = EntityNetwork.from_file(filename)         # Note that this does not (and should not) create a new file
+    status = "Loaded PIMesh network from file"
 except FileNotFoundError:
-network = EntityNetwork()
-status = "Created empty network (file not found)"
+    network = EntityNetwork()
+    status = "Created empty network (file not found)"
 
 #class command:
 #  def __init__(self, name, invocations, modes, minargs, maxargs)
@@ -43,24 +43,24 @@ def print_entity_list():
     """Print a list of entitites which have one of more links to/from them"""
     global status
     if len(network) == 0:
-    print("(No entities in network)")
-    return 1
+        print("(No entities in network)")           # Could be slightly confusing, but saves a big empty space
+        return 1
     for name in network:
         print(name)
-    return len(network)
+    return len(network)         # number of lines printed by this function, needed to pad vertically by the right amount
 
 
 def print_entity_links(entity):
     """Print a list of links associated with a specific entity"""
     print(str(entity))
-    return len(entity.links)+3
+    return len(entity.links)+3 # number of lines printed by this function, needed to pad vertically by the right amount
 
 
 def print_help():
     """Display documentation"""
     global status
-    status = "Sorry, help not implemented yet"
-    return 0
+    status = "Sorry, help not implemented yet"          # FIXME
+    return 0                    # number of lines printed by this function, needed to pad vertically by the right amount
 
 
 def split_input(user_input):
@@ -71,9 +71,9 @@ def split_input(user_input):
     return command, arguments
 
 
-def process_command(command, arguments):
+def process_command(command, arguments):                #FIXME
     """Act on a command and list of arguments - this needs improving"""
-    global quitting, current_mode, current_entity, status
+    global quitting, current_mode, current_entity, status       # Not sure if globals are nice or not...
     
     #for command in commands:
     #if invocation in command.invocations:
@@ -82,8 +82,8 @@ def process_command(command, arguments):
     #else:
     #status = invocation + " - unknown command"
     
-    status = command + ": Operation sucessful"
-    try:
+    status = command + ": Operation sucessful"          # Fallback status - is assuming sucess really a good idea?
+    try:                                                # Hacky way to catch errors - will be fixed in new code (commented out)
         if command in ["quit", "exit"]:
             status = "Exiting by user request..."
             quitting = True
@@ -122,7 +122,7 @@ quitting = False
 while not quitting:
     cols, lines = shutil.get_terminal_size()
     os.system("clear")
-    if current_mode == Mode.list:
+    if current_mode == Mode.list:               # Elif chains are ugly - FIXME
         used_lines = print_entity_list()
     elif current_mode == Mode.links:
         used_lines = print_entity_links(current_entity)
@@ -132,7 +132,7 @@ while not quitting:
         status = "Error: Unknown current_mode!"
 
     used_lines += 3
-    print("\n" * (lines - used_lines))
+    print("\n" * (lines - used_lines))            # Pad vertically so that the command prompt is at the bottom of the terminal
     status_line = " " + status + (" " * (cols - len(status) - 1))
     termcolor.cprint(status_line, attrs=['reverse'])
     command, arguments = split_input(input("> "))
