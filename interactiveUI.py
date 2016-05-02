@@ -126,11 +126,17 @@ command_add.applicable_modes = [Mode.links]
 def command_update(arguments):
     """Change the target of one of the current entity's links"""
     global current_entity
-    current_entity.relink(arguments[0], arguments[1], arguments[2])
-    return 'Updated link from "' + arguments[0] + ': ' + arguments[1] + '" to "' + arguments[0] + ': ' + arguments[2] + '"'
+    if len(current_entity[arguments[0]]) == 1 and len(arguments) == 2:
+        old_target = current_entity[arguments[0]][0].name
+        current_entity.relink(arguments[0], current_entity[arguments[0]][0], arguments[1])
+        return 'Updated link from "' + arguments[0] + ': ' + old_target + '" to "' + arguments[0] + ': ' + arguments[1] + '"'
+    else:
+        current_entity.relink(arguments[0], arguments[1], arguments[2])
+        return 'Updated link from "' + arguments[0] + ': ' + arguments[1] + '" to "' + arguments[0] + ': ' + arguments[2] + '"'
+    
 
 command_update.names = ['update', 'ud']
-command_update.accepted_args = [3]
+command_update.accepted_args = [2, 3]
 command_update.applicable_modes = [Mode.links]
 
 def command_help(arguments):
