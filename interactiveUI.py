@@ -73,7 +73,7 @@ def split_input(user_input):
 def command_quit(arguments):
     global quitting
     quitting = True
-    return "Now quitting"
+    return 'Now quitting'
 
 command_quit.names = ['quit', 'exit']
 command_quit.accepted_args = [0]
@@ -83,7 +83,7 @@ def command_list(arguments):
     global current_mode
     current_mode = Mode.list
     #current_entity.link(arguments[0], arguments[1])
-    return "Now listing all entities"
+    return 'Now listing all entities'
 
 command_list.names = ['list', 'ls']
 command_list.accepted_args = [0]
@@ -94,7 +94,7 @@ def command_view(arguments):
     current_mode = Mode.links
     current_entity = network[arguments[0]]
     #current_entity.link(arguments[0], arguments[1])
-    return "Now viewing entity: " + arguments[0]
+    return 'Now viewing entity "' + arguments[0] + '"'
 
 command_view.names = ['view', 'vw']
 command_view.accepted_args = [1]
@@ -103,7 +103,7 @@ command_view.applicable_modes = [Mode.links, Mode.help, Mode.list]
 def command_remove(arguments):
     global current_entity
     current_entity.unlink(arguments[0], arguments[1])
-    return "Removed link [" + arguments[0] + ": " + arguments[1] + "]"
+    return 'Removed link "' + arguments[0] + ": " + arguments[1] + '"'
 
 command_remove.names = ['remove', 'rm']
 command_remove.accepted_args = [2]
@@ -112,7 +112,7 @@ command_remove.applicable_modes = [Mode.links]
 def command_add(arguments):
     global current_entity
     current_entity.link(arguments[0], arguments[1])
-    return "Added link [" + arguments[0] + ": " + arguments[1] + "]"
+    return 'Added link "' + arguments[0] + ": " + arguments[1] + '"'
 
 command_add.names = ['add', 'ad']
 command_add.accepted_args = [2]
@@ -121,7 +121,7 @@ command_add.applicable_modes = [Mode.links]
 def command_update(arguments):
     global current_entity
     current_entity.relink(arguments[0], arguments[1], arguments[2])
-    return "Updated link from [" + arguments[0] + ": " + arguments[1] + "] to [" + arguments[0] + ": " + arguments[2] + "]"
+    return 'Updated link from "' + arguments[0] + ': ' + arguments[1] + '" to "' + arguments[0] + ': ' + arguments[2] + '"'
 
 command_update.names = ['update', 'ud']
 command_update.accepted_args = [3]
@@ -130,7 +130,7 @@ command_update.applicable_modes = [Mode.links]
 def command_help(arguments):
     global current_mode
     current_mode = Mode.help
-    return "Now viewing documentation"
+    return 'Now viewing documentation'
 
 command_help.names = ['help', 'man', '?']
 command_help.accepted_args = [0]

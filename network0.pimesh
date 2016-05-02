@@ -1,31 +1,34 @@
-19 years
-========
-age of: cedstone
-
-cabbage
-=======
-shape: round
-colour: green
-category: vegetable
-
-vegetable
-=========
-category of: cabbage
-category of: turnip
+round
+=====
 
 turnip
 ======
 category: vegetable
 
+19 years
+========
+age of: cedstone
+
 green
 =====
 colour of: cabbage
+
+cabbage
+=======
+category: vegetable
+shape: spherical
+colour: green
+
+spherical
+=========
+shape of: cabbage
 
 cedstone
 ========
 age: 19 years
 
-round
-=====
-shape of: cabbage
+vegetable
+=========
+category of: cabbage
+category of: turnip
 
