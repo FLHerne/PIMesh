@@ -70,52 +70,106 @@ def split_input(user_input):
         arguments = arguments[0].split(": ")
     return command, arguments
 
+#-----------------
+
+def command_quit(arguments):
+    global quitting
+    quitting = True
+    return "Now quitting"
+
+command_quit.names = ['quit', 'exit']
+command_quit.accepted_args = [0]
+command_quit.applicable_modes = [Mode.links, Mode.list, Mode.help]
+
+def command_list(arguments):
+    global current_mode
+    current_mode = Mode.list
+    #current_entity.link(arguments[0], arguments[1])
+    return "Now listing all entities"
+
+command_list.names = ['list', 'ls']
+command_list.accepted_args = [0]
+command_list.applicable_modes = [Mode.links, Mode.help]
+
+def command_view(arguments):
+    global current_mode, current_entity
+    current_mode = Mode.links
+    current_entity = network[arguments[0]]
+    #current_entity.link(arguments[0], arguments[1])
+    return "Now viewing entity: " + arguments[0]
+
+command_view.names = ['view', 'vw']
+command_view.accepted_args = [1]
+command_view.applicable_modes = [Mode.links, Mode.help, Mode.list]
+
+#-----------------
+
+commands = (
+    command_list,
+    command_view,
+    command_quit
+)
+
 
 def process_command(command, arguments):                #FIXME
     """Act on a command and list of arguments - this needs improving"""
     global quitting, current_mode, current_entity, status       # Not sure if globals are nice or not...
     
+    invocation = command
+    for command in commands:
+        if invocation in command.names:
+            if len(arguments) not in command.accepted_args:
+                status = invocation + ": Unacceptable number of arguments"
+                break
+            if current_mode not in command.applicable_modes:
+                status = invocation + ": Inappropriate mode"
+                break
+            status = command(arguments)
+            break
+    else:
+        status = invocation + " - unknown command"
     #for command in commands:
     #if invocation in command.invocations:
         #status = command()
         #break
     #else:
     #status = invocation + " - unknown command"
-    
-    status = command + ": Operation sucessful"          # Fallback status - is assuming sucess really a good idea?
-    try:                                                # Hacky way to catch errors - will be fixed in new code (commented out)
-        if command in ["quit", "exit"]:
-            status = "Exiting by user request..."
-            quitting = True
-        elif command in ["help", "?", "man", "manual"]:
-            current_mode = Mode.help
-            status = "Entered help mode"
-        elif command in ["list", "ls"]:
-            current_mode = Mode.list
-            status = "Entered entity list mode"
-        elif command in ["view", "vw"]:
-            current_mode = Mode.links
-            current_entity = network[arguments[0]]
-            status = "Now viewing entity: " + arguments[0]
-        elif command in ["remove", "rm"]:
-            if current_mode == Mode.links:
-                current_entity.unlink(arguments[0], arguments[1])
-            else:
-                status = "Please enter entity view mode using 'view <entity>' and try again"
-        elif command in ["add", "ad"]:
-            if current_mode == Mode.links:
-                current_entity.link(arguments[0], arguments[1])
-            else:
-                status = "Please enter entity view mode using 'view <entity>' and try again"
-        elif command in ["update", "ud"]:
-            if current_mode == Mode.links:
-                current_entity.relink(arguments[0], arguments[1], arguments[2])
-            else:
-                status = "Please enter entity view mode using 'view <entity>' and try again"
-        else:
-            status = "Error: Unknown command"
-    except:
-        status = command + ": Operation failed"
+
+
+    #status = command + ": Operation sucessful"          # Fallback status - is assuming sucess really a good idea?
+    #try:                                                # Hacky way to catch errors - will be fixed in new code (commented out)
+    #    if command in ["quit", "exit"]:
+    #        status = "Exiting by user request..."
+    #        quitting = True
+    #    elif command in ["help", "?", "man", "manual"]:
+    #        current_mode = Mode.help
+    #        status = "Entered help mode"
+    #    elif command in ["list", "ls"]:
+    #        current_mode = Mode.list
+    #        status = "Entered entity list mode"
+    #    elif command in ["view", "vw"]:
+    #        current_mode = Mode.links
+    #        current_entity = network[arguments[0]]
+    #        status = "Now viewing entity: " + arguments[0]
+    #    elif command in ["remove", "rm"]:
+    #        if current_mode == Mode.links:
+    #            current_entity.unlink(arguments[0], arguments[1])
+    #        else:
+    #            status = "Please enter entity view mode using 'view <entity>' and try again"
+    #    elif command in ["add", "ad"]:
+    #        if current_mode == Mode.links:
+    #            current_entity.link(arguments[0], arguments[1])
+    #        else:
+    #            status = "Please enter entity view mode using 'view <entity>' and try again"
+    #    elif command in ["update", "ud"]:
+    #        if current_mode == Mode.links:
+    #            current_entity.relink(arguments[0], arguments[1], arguments[2])
+    #        else:
+    #            status = "Please enter entity view mode using 'view <entity>' and try again"
+    #    else:
+    #        status = "Error: Unknown command"
+    #except:
+    #    status = command + ": Operation failed"
 
 
 quitting = False
