@@ -1,3 +1,18 @@
+spherical
+=========
+shape of: cabbage
+
+cabbage
+=======
+shape: spherical
+colour: green
+category: vegetable
+
+vegetable
+=========
+category of: turnip
+category of: cabbage
+
 round
 =====
 
@@ -5,30 +20,20 @@ turnip
 ======
 category: vegetable
 
-19 years
-========
-age of: cedstone
-
-green
-=====
-colour of: cabbage
-
-cabbage
+flherne
 =======
-category: vegetable
-shape: spherical
-colour: green
-
-spherical
-=========
-shape of: cabbage
+age: 19 years
 
 cedstone
 ========
 age: 19 years
 
-vegetable
-=========
-category of: cabbage
-category of: turnip
+19 years
+========
+age of: cedstone
+age of: flherne
+
+green
+=====
+colour of: cabbage
 

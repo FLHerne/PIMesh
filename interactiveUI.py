@@ -71,6 +71,7 @@ def split_input(user_input):
 #-----------------
 
 def command_quit(arguments):
+    """Trigger a clean exit from the program, saving changes"""
     global quitting
     quitting = True
     return 'Now quitting'
@@ -80,6 +81,7 @@ command_quit.accepted_args = [0]
 command_quit.applicable_modes = [Mode.links, Mode.list, Mode.help]
 
 def command_list(arguments):
+    """list entities which have associated links"""
     global current_mode
     current_mode = Mode.list
     #current_entity.link(arguments[0], arguments[1])
@@ -90,6 +92,7 @@ command_list.accepted_args = [0]
 command_list.applicable_modes = [Mode.links, Mode.help]
 
 def command_view(arguments):
+    """View the links associated with a specified entity, creating that entity if required"""
     global current_mode, current_entity
     current_mode = Mode.links
     current_entity = network[arguments[0]]
@@ -101,6 +104,7 @@ command_view.accepted_args = [1]
 command_view.applicable_modes = [Mode.links, Mode.help, Mode.list]
 
 def command_remove(arguments):
+    """Remove a specific link associated with the current entity"""
     global current_entity
     current_entity.unlink(arguments[0], arguments[1])
     return 'Removed link "' + arguments[0] + ": " + arguments[1] + '"'
@@ -110,6 +114,7 @@ command_remove.accepted_args = [2]
 command_remove.applicable_modes = [Mode.links]
 
 def command_add(arguments):
+    """Add a new link to the current entity"""
     global current_entity
     current_entity.link(arguments[0], arguments[1])
     return 'Added link "' + arguments[0] + ": " + arguments[1] + '"'
@@ -119,6 +124,7 @@ command_add.accepted_args = [2]
 command_add.applicable_modes = [Mode.links]
 
 def command_update(arguments):
+    """Change the target of one of the current entity's links"""
     global current_entity
     current_entity.relink(arguments[0], arguments[1], arguments[2])
     return 'Updated link from "' + arguments[0] + ': ' + arguments[1] + '" to "' + arguments[0] + ': ' + arguments[2] + '"'
@@ -128,6 +134,7 @@ command_update.accepted_args = [3]
 command_update.applicable_modes = [Mode.links]
 
 def command_help(arguments):
+    """display documentation"""
     global current_mode
     current_mode = Mode.help
     return 'Now viewing documentation'
