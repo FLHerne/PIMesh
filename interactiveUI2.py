@@ -21,46 +21,50 @@ print("\x1B]0;%s\x07" % "PIMesh") # Set window title
 filename = "network0.pimesh"
 
 try:
-  network = EntityNetwork.from_file(filename)
-  status = "Loaded PIMesh network from file"
+network = EntityNetwork.from_file(filename)
+status = "Loaded PIMesh network from file"
 except FileNotFoundError:
-  network = EntityNetwork()
-  status = "Created empty network (file not found)"
+network = EntityNetwork()
+status = "Created empty network (file not found)"
 
-class command:
-  def __init__(self, name, invocations, modes, minargs, maxargs)
-    self.name = name
-    self.invocations = invocations
-    self.modes = modes
-    self.minargs = minargs
-    self.maxargs = maxargs
-  def __call__(self):
-    outcome = "just testing"
-    return (name + ": " + outcome)
-  
+#class command:
+#  def __init__(self, name, invocations, modes, minargs, maxargs)
+#    self.name = name
+#    self.invocations = invocations
+#    self.modes = modes
+#    self.minargs = minargs
+#    self.maxargs = maxargs
+#  def __call__(self):
+#    outcome = "just testing"
+#    return (name + ": " + outcome)
+
 
 def print_entity_list():
+    """Print a list of entitites which have one of more links to/from them"""
     global status
     if len(network) == 0:
-      print("(No entities in network)")
-      return 1
+    print("(No entities in network)")
+    return 1
     for name in network:
         print(name)
     return len(network)
 
 
 def print_entity_links(entity):
+    """Print a list of links associated with a specific entity"""
     print(str(entity))
     return len(entity.links)+3
 
 
 def print_help():
+    """Display documentation"""
     global status
     status = "Sorry, help not implemented yet"
     return 0
 
 
 def split_input(user_input):
+    """Split user input into a command and a list of arguments"""
     command, *arguments = user_input.split(" ", 1)
     if len(arguments) > 0:
         arguments = arguments[0].split(": ")
@@ -68,14 +72,15 @@ def split_input(user_input):
 
 
 def process_command(command, arguments):
+    """Act on a command and list of arguments - this needs improving"""
     global quitting, current_mode, current_entity, status
     
     #for command in commands:
-      #if invocation in command.invocations:
-	  #status = command()
-	  #break
+    #if invocation in command.invocations:
+        #status = command()
+        #break
     #else:
-      #status = invocation + " - unknown command"
+    #status = invocation + " - unknown command"
     
     status = command + ": Operation sucessful"
     try:
