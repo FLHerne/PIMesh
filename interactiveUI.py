@@ -16,21 +16,30 @@ mode_names = {
 }
 current_mode = Mode.list
 
+class UI:
+  def __init__(self, lines, cols):
+    self.mode = Mode.list
+    self.status = "Started PIMesh"
+    self.lines = lines
+    self.cols = cols
+
+UI = UI(shutil.get_terminal_size()[0], shutil.get_terminal_size()[1])
+
 print("\x1B]0;%s\x07" % "PIMesh") # Set window title
 
 filename = "network0.pimesh"            # Currently fixed filename - should it really be an argument when starting the script?
 
 try:
     network = EntityNetwork.from_file(filename)         # Note that this does not (and should not) create a new file
-    status = "Loaded PIMesh network from file"
+    UI.status = "Loaded PIMesh network from file"
 except FileNotFoundError:
     network = EntityNetwork()
-    status = "Created empty network (file not found)"
+    UI.status = "Created empty network (file not found)"
 
 
 def print_entity_list():
     """Print a list of entitites which have one of more links to/from them"""
-    global status
+    #global UI.status
     if len(network) == 0:
         print("(No entities in network)")           # Could be slightly confusing, but saves a big empty space
         return 1
@@ -47,7 +56,7 @@ def print_entity_links(entity):
 
 def print_help():
     """Display documentation"""
-    global status
+    #global UI.status
     print("Sorry, help not implemented yet")          # FIXME
     return 1                    # number of lines printed by this function, needed to pad vertically by the right amount
 
@@ -141,26 +150,26 @@ commands = (
 
 
 def process_command(command, arguments):
-    global quitting, current_mode, current_entity, status       # Not sure if globals are nice or not...
+    global quitting, current_mode, current_entity, UI       # Not sure if globals are nice or not...
     
     invocation = command
     for command in commands:
         if invocation in command.names:
             if len(arguments) not in command.accepted_args:
-                status = command.names[0] + ": Unacceptable number of arguments"
+                UI.status = command.names[0] + ": Unacceptable number of arguments"
                 break
             if current_mode not in command.applicable_modes:
-                status = command.names[0] + ": Inappropriate mode"
+                UI.status = command.names[0] + ": Inappropriate mode"
                 break
-            status = command(arguments)
+            UI.status = command(arguments)
             break
     else:
-        status = invocation + " - unknown command"
+        UI.status = invocation + " - unknown command"
 
 
 quitting = False
 while not quitting:
-    cols, lines = shutil.get_terminal_size()
+    UI.cols, UI.lines = shutil.get_terminal_size()
     os.system("clear")
     if current_mode == Mode.list:               # Elif chains are ugly - FIXME
         used_lines = print_entity_list()
@@ -169,12 +178,12 @@ while not quitting:
     elif current_mode == Mode.help:
         used_lines = print_help()
     else:
-        status = "Error: Unknown current_mode!"
+        UI.status = "Error: Unknown current_mode!"
 
     used_lines += 3
-    print("\n" * (lines - used_lines))            # Pad vertically so that the command prompt is at the bottom of the terminal
-    status_line = " " + status + (" " * (cols - len(status) - 1))
-    termcolor.cprint(status_line, attrs=['reverse'])
+    print("\n" * (UI.lines - used_lines))            # Pad vertically so that the command prompt is at the bottom of the terminal
+    UI.status_line = " " + UI.status + (" " * (UI.cols - len(UI.status) - 1))
+    termcolor.cprint(UI.status_line, attrs=['reverse'])
     command, arguments = split_input(input("> "))
     process_command(command, arguments)
 
