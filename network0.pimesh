@@ -1,24 +1,26 @@
-green
-=====
-colour of: cabbage
-
-cabage
-======
-
-cedstone
-========
-
 cabbage
 =======
 category: vegetable
 colour: green
 
+cedstone
+========
+age: 19 years
+
+vegetable
+=========
+category of: cabbage
+category of: turnip
+
+green
+=====
+colour of: cabbage
+
 turnip
 ======
 category: vegetable
 
-vegetable
-=========
-category of: turnip
-category of: cabbage
+19 years
+========
+age of: cedstone
 
