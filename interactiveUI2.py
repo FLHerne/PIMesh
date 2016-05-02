@@ -27,6 +27,17 @@ except FileNotFoundError:
   network = EntityNetwork()
   status = "Created empty network (file not found)"
 
+class command:
+  def __init__(self, name, invocations, modes, minargs, maxargs)
+    self.name = name
+    self.invocations = invocations
+    self.modes = modes
+    self.minargs = minargs
+    self.maxargs = maxargs
+  def __call__(self):
+    outcome = "just testing"
+    return (name + ": " + outcome)
+  
 
 def print_entity_list():
     global status
@@ -58,6 +69,14 @@ def split_input(user_input):
 
 def process_command(command, arguments):
     global quitting, current_mode, current_entity, status
+    
+    #for command in commands:
+      #if invocation in command.invocations:
+	  #status = command()
+	  #break
+    #else:
+      #status = invocation + " - unknown command"
+    
     status = command + ": Operation sucessful"
     try:
         if command in ["quit", "exit"]:

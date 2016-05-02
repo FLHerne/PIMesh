@@ -1,18 +1,18 @@
+green
+=====
+colour of: cabbage
+
 turnip
 ======
 category: vegetable
 
-cabbage
-=======
-category: vegetable
-colour: green
-
 vegetable
 =========
-category of: cabbage
 category of: turnip
+category of: cabbage
 
-green
-=====
-colour of: cabbage
+cabbage
+=======
+colour: green
+category: vegetable
 
