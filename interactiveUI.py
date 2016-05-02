@@ -129,9 +129,9 @@ def command_update(arguments):
     if len(arguments) == 2:
         if len(current_entity[arguments[0]]) > 1:
             return 'Sorry, tag "' + arguments[0] + '" is ambiguous.'
-        old_target = current_entity[arguments[0]][0].name
-        current_entity.relink(arguments[0], current_entity[arguments[0]][0], arguments[1])
-        return 'Updated link from "' + arguments[0] + ': ' + old_target + '" to "' + arguments[0] + ': ' + arguments[1] + '"'
+        old_target = current_entity[arguments[0]][0]
+        current_entity.relink(arguments[0], old_target, arguments[1])
+        return 'Updated link from "' + arguments[0] + ': ' + old_target.name + '" to "' + arguments[0] + ': ' + arguments[1] + '"'
     else:
         current_entity.relink(arguments[0], arguments[1], arguments[2])
         return 'Updated link from "' + arguments[0] + ': ' + arguments[1] + '" to "' + arguments[0] + ': ' + arguments[2] + '"'
