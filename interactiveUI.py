@@ -126,7 +126,9 @@ command_add.applicable_modes = [Mode.links]
 def command_update(arguments):
     """Change the target of one of the current entity's links"""
     global current_entity
-    if len(current_entity[arguments[0]]) == 1 and len(arguments) == 2:
+    if len(arguments) == 2:
+        if len(current_entity[arguments[0]]) > 1:
+            return 'Sorry, tag "' + arguments[0] + '" is ambiguous.'
         old_target = current_entity[arguments[0]][0].name
         current_entity.relink(arguments[0], current_entity[arguments[0]][0], arguments[1])
         return 'Updated link from "' + arguments[0] + ': ' + old_target + '" to "' + arguments[0] + ': ' + arguments[1] + '"'
