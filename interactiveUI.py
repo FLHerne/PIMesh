@@ -136,7 +136,7 @@ def command_update(arguments):
         return 'Updated link from "' + arguments[0] + ': ' + old_target.name + '" to "' + arguments[0] + ': ' + arguments[1] + '"'
     else:
         if len(current_entity[arguments[0]]) < 1 or current_entity[arguments[0]][0].name != arguments[1]:
-            return arguments[0] + ': ' + arguments[1] + ' - no such link for this entity'
+            return '"' + arguments[0] + ': ' + arguments[1] + '" - no such link for this entity'
         current_entity.relink(arguments[0], arguments[1], arguments[2])
         return 'Updated link from "' + arguments[0] + ': ' + arguments[1] + '" to "' + arguments[0] + ': ' + arguments[2] + '"'
     
