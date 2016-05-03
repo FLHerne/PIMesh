@@ -1,8 +1,3 @@
-vegetables
-==========
-category of: turnip
-category of: cabbage
-
 grass
 =====
 colour: green
@@ -18,6 +13,11 @@ category: vegetables
 
 green
 =====
-colour of: grass
 colour of: cabbage
+colour of: grass
+
+vegetables
+==========
+category of: cabbage
+category of: turnip
 

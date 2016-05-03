@@ -59,8 +59,11 @@ def print_entity_links(entity):
 def print_help():
     """Display documentation"""
     #global UI.status
-    print("Sorry, help not implemented yet")          # FIXME
-    return 1                    # number of lines printed by this function, needed to pad vertically by the right amount
+    #print("Sorry, help not implemented yet")          # FIXME
+    for command in commands:
+      print(command.names[0])
+      print("  " + command.__doc__ + '\n')
+    return len(commands)*3                    # number of lines printed by this function, needed to pad vertically by the right amount
 
 
 def split_input(user_input):
