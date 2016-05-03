@@ -43,16 +43,16 @@ def print_entity_list():
     if len(network) == 0:
         print("(No entities in network)")           # Could be slightly confusing, but saves a big empty space
         return 1
-    i = 0
-    for name in network:
-        print(str(i) + " | " + name)
-        i += 1
+    for n, name in enumerate(network):
+        print(str(n) + " | " + name)
     return len(network)         # number of lines printed by this function, needed to pad vertically by the right amount
 
 
 def print_entity_links(entity):
     """Print a list of links associated with a specific entity"""
-    print(str(entity))
+    print(entity.name + ':\n')
+    for n, link in enumerate(entity.links):
+        print(str(n) + " | " + link[0] + ": " + link[1].name)
     return len(entity.links)+3 # number of lines printed by this function, needed to pad vertically by the right amount
 
 

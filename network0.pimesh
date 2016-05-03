@@ -1,12 +1,7 @@
-green
-=====
-colour of: cabbage
-colour of: grass
-
 vegetables
 ==========
-category of: cabbage
 category of: turnip
+category of: cabbage
 
 grass
 =====
@@ -14,10 +9,15 @@ colour: green
 
 cabbage
 =======
-category: vegetables
 colour: green
+category: vegetables
 
 turnip
 ======
 category: vegetables
+
+green
+=====
+colour of: grass
+colour of: cabbage
 
