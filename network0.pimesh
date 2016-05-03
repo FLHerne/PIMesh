@@ -6,15 +6,20 @@ category of: turnip
 grass
 =====
 colour: green
-
-turnip
-======
-category: vegetables
+eaten by: sheep
 
 cabbage
 =======
 colour: green
 category: vegetables
+
+turnip
+======
+category: vegetables
+
+sheep
+=====
+eaten by of: grass
 
 green
 =====

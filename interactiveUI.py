@@ -174,10 +174,9 @@ commands = (
 )
 
 
-def process_command(command, arguments):
+def process_command(invocation, arguments):
     global quitting, current_mode, current_entity, UI       # Not sure if globals are nice or not...
     
-    invocation = command
     for command in commands:
         if invocation in command.names:
             if len(arguments) not in command.accepted_args:
