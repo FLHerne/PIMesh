@@ -1,23 +1,23 @@
+vegetables
+==========
+category of: cabbage
+category of: turnip
+
 grass
 =====
 colour: green
+
+turnip
+======
+category: vegetables
 
 cabbage
 =======
 colour: green
 category: vegetables
 
-turnip
-======
-category: vegetables
-
 green
 =====
-colour of: cabbage
 colour of: grass
-
-vegetables
-==========
-category of: cabbage
-category of: turnip
+colour of: cabbage
 

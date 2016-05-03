@@ -53,7 +53,7 @@ def print_entity_links(entity):
     print(entity.name + ':\n')
     for n, link in enumerate(entity.links):
         print(str(n) + " | " + link[0] + ": " + link[1].name)
-    return len(entity.links)+3 # number of lines printed by this function, needed to pad vertically by the right amount
+    return len(entity.links)+2 # number of lines printed by this function, needed to pad vertically by the right amount
 
 
 def print_help():
