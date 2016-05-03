@@ -188,7 +188,19 @@ def process_command(invocation, arguments):
             UI.status = command(arguments)
             break
     else:
-        UI.status = invocation + " - unknown command"
+        try:
+            #int(invocation)
+            #UI.status = "Spotted a number being used as a command!"
+            if current_mode == Mode.links:
+                UI.status = command_view([current_entity.links[int(invocation)][1].name,])
+            elif current_mode == Mode.list:
+                UI.status = command_view([tuple(network.keys())[int(invocation)],])
+            else:
+                UI.status = "Numeric shortcuts don't work in this mode"
+        except IndexError:
+            UI.status = invocation + " - not the index of any entity"
+        except ValueError:
+            UI.status = invocation + " - unknown command"
 
 
 quitting = False
