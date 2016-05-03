@@ -1,47 +1,23 @@
-turnip
-======
-category: vegetable
+green
+=====
+colour of: cabbage
+colour of: grass
 
-cabbage
-=======
-shape: spherical
-category: vegetable
-
-cedstone
-========
-age: 19 years
-
-vegetable
-=========
+vegetables
+==========
 category of: cabbage
 category of: turnip
-
-spinnach
-========
-colour: green
-
-round
-=====
-
-19 years
-========
-age of: flherne
-age of: cedstone
 
 grass
 =====
 colour: green
 
-flherne
+cabbage
 =======
-age: 19 years
+category: vegetables
+colour: green
 
-spherical
-=========
-shape of: cabbage
-
-green
-=====
-colour of: grass
-colour of: spinnach
+turnip
+======
+category: vegetables
 

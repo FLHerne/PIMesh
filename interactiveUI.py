@@ -43,8 +43,10 @@ def print_entity_list():
     if len(network) == 0:
         print("(No entities in network)")           # Could be slightly confusing, but saves a big empty space
         return 1
+    i = 0
     for name in network:
-        print(name)
+        print(str(i) + " | " + name)
+        i += 1
     return len(network)         # number of lines printed by this function, needed to pad vertically by the right amount
 
 
