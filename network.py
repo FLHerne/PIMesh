@@ -51,6 +51,8 @@ class Entity:
         if target in self._tags[tag]:
             return False
         self._tags[tag].append(target)
+        # Only entities with one or more links are added to the network
+        self._network[self._name] = self
         if mirror:
             return True
         return target.link(reciprocal(tag), self, mirror=True)
@@ -123,5 +125,4 @@ class EntityNetwork(dict):
                 file.write(str(entity) + "\n")
 
     def __missing__(self, key):
-        self[key] = Entity(self, key)
-        return self[key]
+        return Entity(self, key)
