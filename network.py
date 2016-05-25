@@ -82,6 +82,15 @@ class Network:
                 print("Missing inverse links:", missing_inverses)
             return new_net
 
+    def to_file(self, filename):
+        with open(filename, 'w') as file:
+            for origin in self.origins:
+                file.write(origin + "\n")
+                file.write("=" * len(origin) + "\n")
+                for link in self[origin]:
+                    file.write("%s: %s :%s\n" %link[1:])
+                file.write("\n")
+
     def __init__(self, links=[], filter=Link()):
         self._all_links = links
         self.filter = filter
