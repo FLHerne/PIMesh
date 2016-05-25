@@ -207,6 +207,8 @@ def process_command(invocation, arguments):
                 UI.status = "Numeric shortcuts don't work in this mode"
         except IndexError:
             UI.status = invocation + " - invalid index"
+        except ValueError:
+            UI.status = invocation + " - not a command"
 
 
 quitting = False
