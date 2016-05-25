@@ -119,6 +119,12 @@ class Network:
     def link(self, *args):
         """Add link, as Link or separate args"""
         link = args[0] if len(args) == 1 else Link(*args)
+        for n, implicit_prop in enumerate(self.filter):
+            if link[n] == ...:
+                link[n] = implicit_prop
+        if ... in link:
+            raise ValueError("Link not fully specified!")
+
         if link in self._all_links:
             raise ValueError("Link exists!")
         self._all_links += [link, link.inverse()]
