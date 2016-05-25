@@ -73,7 +73,7 @@ class Network:
                     tag, target, *rest = line.split(':')
                     inverse_tag = rest[0] if rest else cls.reciprocal(tag.strip())
                     try:
-                        new_net.link(new_origin, tag.strip(),
+                        new_net.addlink(new_origin, tag.strip(),
                                      target.strip(), inverse_tag.strip())
                         missing_inverses += 1
                     except ValueError:
@@ -116,7 +116,7 @@ class Network:
 
         return Network(self._all_links, new_filter)
 
-    def link(self, *args):
+    def addlink(self, *args):
         """Add link, as Link or separate args"""
         link = args[0] if len(args) == 1 else Link(*args)
         for n, implicit_prop in enumerate(self.filter):
@@ -146,7 +146,7 @@ class Network:
 
     def relink(self, old, new):
         """Replace old (Link) with new (Link)"""
-        self.link(new)
+        self.addlink(new)
         try:
             self.unlink(old)
         except ValueError:

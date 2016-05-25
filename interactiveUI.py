@@ -88,7 +88,7 @@ def command_list(arguments):
     """list entities which have associated links"""
     global current_mode
     current_mode = Mode.list
-    #current_entity.link(arguments[0], arguments[1])
+    #current_entity.addlink(arguments[0], arguments[1])
     return 'Now listing all entities'
 
 command_list.names = ['list', 'ls']
@@ -127,7 +127,7 @@ def command_add(arguments):
     tag, target, *rest = arguments[0], arguments[1]
     inverse_tag = rest[0] if rest else Network.reciprocal(tag)
     try:
-        network.link(current_name, tag, target, inverse_tag)
+        network.addlink(current_name, tag, target, inverse_tag)
         return 'Added link "' + tag + ": " + target + '"'
     except ValueError:
         return "Link already existed."
@@ -152,7 +152,7 @@ def command_update(arguments):
         return 'Sorry, tag "' + tag + '" is ambiguous.'
     inverse_tag = to_replace[0].inverse_tag
     to_replace.unlink()
-    network.link(current_name, tag, new_target, inverse_tag)
+    network.addlink(current_name, tag, new_target, inverse_tag)
 
     return 'Updated link from "' + tag + ': ' + old_target + '" to "' + tag + ': ' + new_target + '"'
 
