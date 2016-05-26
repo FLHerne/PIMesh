@@ -1,128 +1,175 @@
-from collections import defaultdict, namedtuple
+import heapq
+
+from collections import namedtuple
 
 
-def reciprocal(tag):
-    if tag[-3:] == " of":
-        return tag[:-3]
-    else:
-        return tag + " of"
+Link = namedtuple('Link', ('origin', 'tag', 'target', 'inverse_tag'))
+Link.__new__.__defaults__ = (...,) * len(Link._fields)
 
-def header(text):
-    return text + "\n" + "=" * len(text)
+def __link_combined(self, other):
+    out_values = []
+    # Messy
+    for own_value, new_value in zip(self, other):
+        if new_value != own_value and new_value != ... and own_value != ...:
+            raise ValueError("Links are mutually exclusive!")
+        out_values.append(new_value if new_value != ... else own_value)
+    return Link(*out_values)
+
+def __link_inverse(self):
+    """View a link from the other end (should be classmethod)"""
+    return Link(self.target, self.inverse_tag, self.origin, self.tag)
+
+def __link_matches(self, other):
+    return all(query in (value, ...) for query, value in zip(other, self))
+
+Link.combined = __link_combined
+Link.inverse = __link_inverse
+Link.matches = __link_matches
 
 
-class Entity:
-    def __init__(self, network, name):
-        self._name = name
-        self._network = network
-        self._tags = defaultdict(list)
+def unique(sequence):
+    """Remove duplicates, preserving order"""
+    output = []
+    for value in sequence:
+        if value not in output:
+            output.append(value)
+    return output
 
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def links(self):
-        links = []
-        #TODO Messy...
-        for tag in self:
-            for target in tag[1]:
-                links.append((tag[0], target))
-        return tuple(links)
-
-    def __str__(self):
-        output = header(self._name) + "\n"
-        for tag, targets in self._tags.items():
-            for target in targets:
-                output += tag + ": " + target.name + "\n"
-        return output
-
-    def __len__(self):
-        return len(self._tags)
-
-    def __getitem__(self, key):
-        return tuple(self._tags[key])
-
-    def __iter__(self):
-        return iter(self._tags.items())
-
-    def link(self, tag, target, mirror=False):
-        target = self._resolve_target(target)
-        if target in self._tags[tag]:
-            return False
-        self._tags[tag].append(target)
-        # Only entities with one or more links are added to the network
-        self._network[self._name] = self
-        if mirror:
-            return True
-        return target.link(reciprocal(tag), self, mirror=True)
-
-    def unlink(self, tag, target, mirror=False):
-        target = self._resolve_target(target)
-        if target not in self._tags[tag]:
-            return False
-        self._tags[tag].remove(target)
-        if not self._tags[tag]:
-            del self._tags[tag]
-            if not self._tags:
-                del self._network[self._name]
-        if mirror:
-            return True
-        return target.unlink(reciprocal(tag), self, mirror=True)
-
-    def relink(self, tag, old_target, new_target):
-        if not self.link(tag, new_target):
-            return False
-        if not self.unlink(tag, old_target):
-            # Failed, remove new link.
-            self.unlink(tag, new_target)
-            return False
-        return True
-
-    def _resolve_target(self, target):
-        if isinstance(target, Entity):
-            return target
+class Network:
+    @staticmethod
+    def reciprocal(tag):
+        if tag[-3:] == " of":
+            return tag[:-3]
         else:
-            return self._network[target]
+                return tag + " of"
 
-
-class EntityNetwork(dict):
     @classmethod
     def from_file(cls, filename):
-        """Load a network from a file (kinda fragile, also aargh)"""
-        network = cls()
         with open(filename) as file:
+            new_net = cls()
+
+            missing_inverses = 0
             state = 'NONE'
-            new_entity = None
+            new_origin = None
             for line in file:
                 line = line.strip()
                 if state is 'NONE':
                     if not line:
                         continue
                     if ':' in line or ',' in line:
-                        raise ValueError("No commas or colons!")
-                    new_entity = network[line]
+                        raise ValueError("Comma/colons in entity name!")
+                    new_origin = line
                     state = 'NAME'
                     continue
                 if state is 'NAME':
-                    if line == '=' * len(new_entity.name):
+                    if line == '=' * len(new_origin):
                         state = 'BODY'
                         continue
-                    raise ValueError("No underline!")
+                    raise ValueError("Expected underline!")
                 if state is 'BODY':
                     if not line:
                         state = 'NONE'
                         continue
                     tag, target, *rest = line.split(':')
-                    if rest:
-                        print("Warning: stuff ignored!")
-                    new_entity.link(tag.strip(), target.strip())
-            return network
+                    inverse_tag = rest[0] if rest else cls.reciprocal(tag.strip())
+                    try:
+                        new_net.addlink(new_origin, tag.strip(),
+                                     target.strip(), inverse_tag.strip())
+                        missing_inverses += 1
+                    except ValueError:
+                        missing_inverses -= 1
+            if missing_inverses:
+                # Who cares?
+                pass
+            return new_net
 
     def to_file(self, filename):
         with open(filename, 'w') as file:
-            for entity in self.values():
-                file.write(str(entity) + "\n")
+            for origin in self.origins:
+                file.write(origin + "\n")
+                file.write("=" * len(origin) + "\n")
+                for link in self[origin]:
+                    outline = "%s: %s" %(link.tag, link.target)
+                    if link.inverse_tag != Network.reciprocal(link.tag):
+                        outline += " :%s" %(link.inverse_tag)
+                    file.write(outline + "\n")
+                file.write("\n")
 
-    def __missing__(self, key):
-        return Entity(self, key)
+    def __init__(self, links=[], filter=Link()):
+        self._all_links = links
+        self.filter = filter
+
+    def _matching_links(self):
+        out = []
+        return (link for link in self._all_links if link.matches(self.filter))
+
+    def __len__(self):
+        return len(tuple(self._matching_links()))
+
+    def __iter__(self):
+        return iter(self._matching_links())
+
+    def __getitem__(self, key):
+        """Get subnetwork of links that match args"""
+        if not isinstance(key, tuple):
+            if isinstance(key, int):
+                return tuple(self._matching_links())[key]
+            key = (key,)
+
+        new_filter = self.filter.combined(Link(*key))
+
+        return Network(self._all_links, new_filter)
+
+    def addlink(self, *args):
+        """Add link, as Link or separate args"""
+        link = args[0] if len(args) == 1 else Link(*args)
+        for n, implicit_prop in enumerate(self.filter):
+            if link[n] == ...:
+                link[n] = implicit_prop
+        if ... in link:
+            raise ValueError("Link not fully specified!")
+
+        if link in self._all_links:
+            raise ValueError("Link exists!")
+        self._all_links += [link, link.inverse()]
+
+    def unlink(self, *args):
+        """Remove all links in self[args]"""
+        if len(args) == 1 and isinstance(args[0], int):
+            args = args[0]
+        to_unlink = self[args]
+        if not len(to_unlink):
+            raise ValueError("No such link(s)!")
+        for link in tuple(to_unlink):  # Copy before removing elements
+            try:
+                self._all_links.remove(link)
+                self._all_links.remove(link.inverse())
+            except ValueError:
+                # Link was removed as inverse in previous loop
+                continue
+
+    def relink(self, old, new):
+        """Replace old (Link) with new (Link)"""
+        self.addlink(new)
+        try:
+            self.unlink(old)
+        except ValueError:
+            self.unlink(new)
+            raise
+
+    # vvv Repetitive
+    @property
+    def origins(self):
+        return unique(link.origin for link in self._matching_links())
+
+    @property
+    def tags(self):
+        return unique(link.tag for link in self._matching_links())
+
+    @property
+    def targets(self):
+        return unique(link.target for link in self._matching_links())
+
+    @property
+    def inverse_tags(self):
+        return unique(link.inverse_tag for link in self._matching_links())
