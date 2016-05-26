@@ -79,7 +79,8 @@ class Network:
                     except ValueError:
                         missing_inverses -= 1
             if missing_inverses:
-                print("Missing inverse links:", missing_inverses)
+                # Who cares?
+                pass
             return new_net
 
     def to_file(self, filename):
