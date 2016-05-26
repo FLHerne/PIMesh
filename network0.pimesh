@@ -2,44 +2,44 @@ turnip
 ======
 category: vegetables
 
+vegetables
+==========
+category of: turnip
+category of: cabbage
+category of: potato
+
 cabbage
 =======
-colour: green
 category: vegetables
+colour: green
 
-sheep
-=====
-eaten by of: grass
+potato
+======
+category: vegetables
+colour: yellow
 
 green
 =====
-colour of: grass
 colour of: cabbage
-
-vegetables
-==========
-category of: cabbage
-category of: turnip
-category of: potato
-
-grass
-=====
-eaten by: sheep
-colour: green
-depends on: sun
+colour of: grass
 
 yellow
 ======
 colour of: potato
 colour of: sun
 
-potato
-======
-colour: yellow
-category: vegetables
+grass
+=====
+colour: green
+eaten by: sheep
+depends on: sun
 
 sun
 ===
 colour: yellow
 depends on of: grass
+
+sheep
+=====
+eaten by of: grass
 
