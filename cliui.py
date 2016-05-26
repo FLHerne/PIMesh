@@ -5,41 +5,47 @@ from enum import Enum
 
 
 class UI:
+  Mode = Enum('Mode', ('list', 'links', 'help'))
+  mode_names = {
+    Mode.list: "Entity List",
+    Mode.links: "Single entity view",
+    Mode.help: "Documentation"
+  }
+ 
   def __init__(self, network):
     self.network = network
     self.quitting = False
     
-    self.Mode = Enum('Mode', ('list', 'links', 'help'))
-    self.mode_names = {
-	self.Mode.list: "Entity List",
-	self.Mode.links: "Single entity view",
-	self.Mode.help: "Documentation"
-    }
     self.mode = self.Mode.list
     
     self.status = "Started PIMesh"
     self.cols, self.lines = shutil.get_terminal_size()
     
+    self.used_lines = 0
+    
     self.commands = {
+      "duck": self.command_duck,
       "quit": self.command_quit,
       "exit": self.command_quit
     }
       
-    #self.command_quit.names = ['quit', 'exit']
-    #self.command_quit.accepted_args = [0]
-    #self.command_quit.applicable_modes = [self.Mode.links, self.Mode.list, self.Mode.help]
-    
+      
   ###########
+  def command_duck(self, mode, arguments):
+    print("\n   >(')____, \n    (` =~~/  \n ~^~^`---'~^~^~")
+    self.used_lines = 4
+    return("Quack!")
+  
   def command_quit(self, mode, arguments):
       """Trigger a clean exit from the program, saving changes"""
-      if len(arguments) != 0:
+      if arguments:
         return "Encountered " + str(len(arguments)) + " arguments, expected 0"
       self.quitting = True
       return 'Now quitting'
   
   ###########
   
-  def processCommand(self):
+  def process_command(self):
     try:
       self.status = self.commands[self.command](self.mode, self.arguments)
     except KeyError:
@@ -52,19 +58,19 @@ class UI:
         arguments = arguments[0].split(": ")
     return command, arguments
     
-  def printStatusLine(self):
+  def print_status_line(self):
     self.status_line = " " + self.status + (" " * (self.cols - len(self.status) - 1))
     termcolor.cprint(self.status_line, attrs=['reverse'])
     
-  def verticalPad(self):
-    print("\n" * self.lines)
+  def vertical_pad(self):
+    print("\n" * (self.lines-(self.used_lines+3)))
     
   def run(self):
     while not self.quitting:
       self.cols, self.lines = shutil.get_terminal_size()
-      self.verticalPad()
-      self.printStatusLine()
+      self.vertical_pad()
+      self.print_status_line()
       self.command, self.arguments = self.split_input(input("> "))
-      self.processCommand()
-      os.system("clear")
+      self.process_command()
+      #os.system("clear")
     
