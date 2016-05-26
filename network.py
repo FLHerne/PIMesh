@@ -88,7 +88,10 @@ class Network:
                 file.write(origin + "\n")
                 file.write("=" * len(origin) + "\n")
                 for link in self[origin]:
-                    file.write("%s: %s :%s\n" %link[1:])
+                    outline = "%s: %s" %(link.tag, link.target)
+                    if link.inverse_tag != Network.reciprocal(link.tag):
+                        outline += " :%s" %(link.inverse_tag)
+                    file.write(outline + "\n")
                 file.write("\n")
 
     def __init__(self, links=[], filter=Link()):
