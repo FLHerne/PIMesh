@@ -8,7 +8,7 @@ try:
     network = Network.from_file(filename)         # Note that this does not (and should not) create a new file
     print("Loaded PIMesh network from file")
 except FileNotFoundError:
-    network = EntityNetwork()
+    network = Network()
     print("Created empty network (file not found)")
 
 ui = UI(network)
