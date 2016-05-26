@@ -1,28 +1,45 @@
-vegetables
-==========
-category of: cabbage
-category of: turnip
+turnip
+======
+category: vegetables
+
+cabbage
+=======
+colour: green
+category: vegetables
 
 sheep
 =====
 eaten by of: grass
-
-turnip
-======
-category: vegetables
 
 green
 =====
 colour of: grass
 colour of: cabbage
 
+vegetables
+==========
+category of: cabbage
+category of: turnip
+category of: potato
+
 grass
 =====
-colour: green
 eaten by: sheep
-
-cabbage
-=======
 colour: green
+depends on: sun
+
+yellow
+======
+colour of: potato
+colour of: sun
+
+potato
+======
+colour: yellow
 category: vegetables
+
+sun
+===
+colour: yellow
+depends on of: grass
 
