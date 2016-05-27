@@ -28,6 +28,8 @@ class UI:
     self.commands = {
       "duck": self.command_duck,
       "list": self.command_list,
+      "view": self.command_view,
+      "help": self.command_help,
       "quit": self.command_quit,
       "exit": self.command_quit
     }
@@ -43,12 +45,12 @@ class UI:
     print("list goes here")
     return 1
   
-  def help_print(self):	
-    print("help goes here")
-    return 1
-  
   def links_print(self):	
     print("links go here")
+    return 1  
+  
+  def help_print(self):	
+    print("help goes here")
     return 1
   
   def duck_print(self):	
@@ -65,6 +67,16 @@ class UI:
     """Draw a duck"""
     self.mode = self.Mode.list
     return("Now entering list mode")
+  
+  def command_help(self, mode, arguments):
+    """Draw a duck"""
+    self.mode = self.Mode.help
+    return("Now veiwing documentation")
+  
+  def command_view(self, mode, arguments):
+    """Draw a duck"""
+    self.mode = self.Mode.links
+    return("Now entering entity links mode")
   
   def command_quit(self, mode, arguments):
       """Trigger a clean exit from the program, saving changes"""
