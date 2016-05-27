@@ -31,7 +31,6 @@ class UI:
       "view": self.command_view,
       "help": self.command_help,
       "quit": self.command_quit,
-      "exit": self.command_quit
     }
     
     self.mode_content = {
@@ -42,7 +41,7 @@ class UI:
     }
       
   def list_print(self):	
-    #print("list goes here")
+    """Print a list of every entity involved in one of more links"""
     for entity in self.network.targets:
       print(entity)
     return len(self.network.targets)
@@ -51,9 +50,12 @@ class UI:
     print("links go here")
     return 1  
   
-  def help_print(self):	
-    print("help goes here")
-    return 1
+  def help_print(self):
+    """Display the docstrings for all commands"""
+    for command in self.commands.items():
+      print(command[0])
+      print("  " + command[1].__doc__ + '\n')
+    return len(self.commands)*3
   
   def duck_print(self):	
     print("\n   >(')____, \n    (` =~~/  \n ~^~^`---'~^~^~")
@@ -66,17 +68,17 @@ class UI:
     return("Quack!")
   
   def command_list(self, mode, arguments):
-    """Draw a duck"""
+    """Print a list of every entity involved in one of more links"""
     self.mode = self.Mode.list
     return("Now entering list mode")
   
   def command_help(self, mode, arguments):
-    """Draw a duck"""
+    """List and describe all commands"""
     self.mode = self.Mode.help
     return("Now veiwing documentation")
   
   def command_view(self, mode, arguments):
-    """Draw a duck"""
+    """View a specific entity"""
     self.mode = self.Mode.links
     return("Now entering entity links mode")
   
