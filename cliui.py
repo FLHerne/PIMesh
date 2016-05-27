@@ -10,7 +10,7 @@ class UI:
     Mode.list: "Entity List",
     Mode.links: "Single entity view",
     Mode.help: "Documentation",
-    Mode.duck: "Anatid Display"
+    Mode.duck: "Anatid"
   }
   
  
@@ -92,13 +92,23 @@ class UI:
     self.status_line = " " + self.status + (" " * (self.cols - len(self.status) - 1))
     termcolor.cprint(self.status_line, attrs=['reverse'])
     
+  def print_titlebar(self):
+    modename = self.mode_names[self.mode]
+    padsize = (self.cols-len(modename))/2
+    padding = (" " * int(padsize))
+    titlebar_string = padding + modename + padding
+    if len(titlebar_string) < self.cols:
+      titlebar_string += " "
+    termcolor.cprint(titlebar_string, attrs=['reverse'])
+    
   def vertical_pad(self):
-    print("\n" * (self.lines-(self.used_lines+3)))
+    print("\n" * (self.lines-(self.used_lines+4)))
     
   def run(self):
     while not self.quitting:
       self.cols, self.lines = shutil.get_terminal_size()
-      self.used_lines = self.mode_content[self.mode]()  #FIXME
+      self.print_titlebar()
+      self.used_lines = self.mode_content[self.mode]()
       self.vertical_pad()
       self.print_status_line()
       self.command, self.arguments = self.split_input(input("> "))
