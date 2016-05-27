@@ -7,7 +7,7 @@ from enum import Enum
 class UI:
   Mode = Enum('Mode', ('list', 'links', 'help', 'duck'))
   mode_names = {
-    Mode.list: "Entity List",
+    Mode.list: "List of all entities",
     Mode.links: "Single entity view",
     Mode.help: "Documentation",
     Mode.duck: "Anatid"
@@ -42,8 +42,10 @@ class UI:
     }
       
   def list_print(self):	
-    print("list goes here")
-    return 1
+    #print("list goes here")
+    for entity in self.network.targets:
+      print(entity)
+    return len(self.network.targets)
   
   def links_print(self):	
     print("links go here")
