@@ -104,19 +104,19 @@ class Network:
     # vvv Repetitive
     @property
     def origins(self):
-        return unique(link.origin for link in self._matching_links())
+        return sorted(unique(link.origin for link in self))
 
     @property
     def tags(self):
-        return unique(link.tag for link in self._matching_links())
+        return sorted(unique(link.tag for link in self))
 
     @property
     def targets(self):
-        return unique(link.target for link in self._matching_links())
+        return sorted(unique(link.target for link in self))
 
     @property
     def inverse_tags(self):
-        return unique(link.inverse_tag for link in self._matching_links())
+        return sorted(unique(link.inverse_tag for link in self))
 
     @classmethod
     def from_file(cls, filename):

@@ -1,7 +1,17 @@
-vegetables
-==========
-category of: cabbage
-category of: turnip
+cabbage
+=======
+category: vegetables
+colour: green
+
+grass
+=====
+colour: green
+eaten by: sheep
+
+green
+=====
+colour of: cabbage
+colour of: grass
 
 sheep
 =====
@@ -11,18 +21,8 @@ turnip
 ======
 category: vegetables
 
-green
-=====
-colour of: grass
-colour of: cabbage
-
-grass
-=====
-colour: green
-eaten by: sheep
-
-cabbage
-=======
-colour: green
-category: vegetables
+vegetables
+==========
+category of: cabbage
+category of: turnip
 
