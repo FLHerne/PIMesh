@@ -48,8 +48,10 @@ class UI:
     return len(self.network.targets)
   
   def links_print(self):	
-    print("links go here")
-    return 1  
+    #print("links go here")
+    for n, link in enumerate(self.network[self.current_entity]):
+      print(str(n) + " | " + link.tag + ": "+ link.target)
+    return len(self.network[self.current_entity])
   
   def help_print(self):
     """Display the docstrings for all commands"""
@@ -133,5 +135,5 @@ class UI:
       self.print_status_line()
       self.command, self.arguments = self.split_input(input("> "))
       self.process_command()
-      #os.system("clear")
+      os.system("clear")
     
