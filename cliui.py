@@ -19,6 +19,7 @@ class UI:
     self.quitting = False
     
     self.mode = self.Mode.list
+    self.current_entity = None
     
     self.status = "Started PIMesh"
     self.cols, self.lines = shutil.get_terminal_size()
@@ -41,7 +42,7 @@ class UI:
     }
       
   def list_print(self):	
-    """Print a list of every entity involved in one of more links"""
+    """Print a list of every entity involved in one or more links"""
     for entity in self.network.targets:
       print(entity)
     return len(self.network.targets)
@@ -79,7 +80,10 @@ class UI:
   
   def command_view(self, mode, arguments):
     """View a specific entity"""
+    if len(arguments) != 1:
+      return "Error: Found " + str(len(arguments)) + " arguments - expected 1"
     self.mode = self.Mode.links
+    self.current_entity = arguments[0]
     return("Now entering entity links mode")
   
   def command_quit(self, mode, arguments):
