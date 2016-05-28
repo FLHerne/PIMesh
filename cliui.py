@@ -115,7 +115,7 @@ class UI:
     return("Switched to showing links for [" + self.current_entity + "]")
   
   def command_remove(self, mode, arguments):
-    """Add a link from the current entity"""
+    """Remove a link from the current entity"""
     if len(arguments) not in range(2, 4):
       return "Encountered " + str(len(arguments)) + " argument(s), expected 2 or 3"
     else:
