@@ -22,6 +22,7 @@ class UI:
     self.current_entity = None
     
     self.status = "Started PIMesh"
+    self.titlebar = "PIMesh"
     self.cols, self.lines = shutil.get_terminal_size()
     
     self.used_lines = 0
@@ -45,40 +46,54 @@ class UI:
     """Print a list of every entity involved in one or more links"""
     for entity in self.network.targets:
       print(entity)
+    self.titlebar = "Showing all entities"
     return len(self.network.targets)
   
   def links_print(self):	
     #print("links go here")
     for n, link in enumerate(self.network[self.current_entity]):
       print(str(n) + " | " + link.tag + ": "+ link.target)
-    return len(self.network[self.current_entity])
+    number_of_links = len(self.network[self.current_entity])
+    if number_of_links:
+      self.titlebar = "Showing all links associated with [" + self.current_entity + "]"
+    else:
+      self.titlebar = "There are currently no links associated with [" + self.current_entity + "]"
+    return number_of_links
   
   def help_print(self):
     """Display the docstrings for all commands"""
     for command in self.commands.items():
       print(command[0])
       print("  " + command[1].__doc__ + '\n')
+    self.titlebar = "Showing documentation"
     return len(self.commands)*3
   
   def duck_print(self):	
     print("\n   >(')____, \n    (` =~~/  \n ~^~^`---'~^~^~")
+    self.titlebar = "Showing wildfowl"
     return 4
       
   ###########
   def command_duck(self, mode, arguments):
     """Draw a duck"""
+    if arguments:
+        return "Encountered " + str(len(arguments)) + " arguments, expected 0"
     self.mode = self.Mode.duck
-    return("Quack!")
+    return("Switched to duck mode")
   
   def command_list(self, mode, arguments):
     """Print a list of every entity involved in one of more links"""
+    if arguments:
+        return "Encountered " + str(len(arguments)) + " arguments, expected 0"
     self.mode = self.Mode.list
-    return("Now entering list mode")
+    return("Switched to entity List mode")
   
   def command_help(self, mode, arguments):
     """List and describe all commands"""
+    if arguments:
+        return "Encountered " + str(len(arguments)) + " arguments, expected 0"
     self.mode = self.Mode.help
-    return("Now veiwing documentation")
+    return("Switched to help mode")
   
   def command_view(self, mode, arguments):
     """View a specific entity"""
@@ -86,7 +101,7 @@ class UI:
       return "Error: Found " + str(len(arguments)) + " arguments - expected 1"
     self.mode = self.Mode.links
     self.current_entity = arguments[0]
-    return("Now entering entity links mode")
+    return("Switched to showing links for [" + self.current_entity + "]")
   
   def command_quit(self, mode, arguments):
       """Trigger a clean exit from the program, saving changes"""
@@ -114,14 +129,17 @@ class UI:
     self.status_line = " " + self.status + (" " * (self.cols - len(self.status) - 1))
     termcolor.cprint(self.status_line, attrs=['reverse'])
     
-  def print_titlebar(self):
+  def set_titlebar(self):
     modename = self.mode_names[self.mode]
-    padsize = (self.cols-len(modename))/2
-    padding = (" " * int(padsize))
-    titlebar_string = padding + modename + padding
-    if len(titlebar_string) < self.cols:
-      titlebar_string += " "
-    termcolor.cprint(titlebar_string, attrs=['reverse'])
+    #self.titlebar = modename
+    #padsize = (self.cols-len(self.titlebar))/2
+    #padding = (" " * int(padsize))
+    #titlebar_string = padding + self.titlebar + padding
+    #if len(titlebar_string) < self.cols:
+    #  titlebar_string += " "
+    #termcolor.cprint(titlebar_string, attrs=['reverse'])
+    termcolor.cprint((" " + self.titlebar + (" " * (self.cols - len(self.titlebar) - 1))), attrs=['reverse'])
+    print("\x1B]0;%s\x07" % ("PIMesh: " + self.titlebar), end='')
     
   def vertical_pad(self):
     print("\n" * (self.lines-(self.used_lines+4)))
@@ -129,9 +147,9 @@ class UI:
   def run(self):
     while not self.quitting:
       self.cols, self.lines = shutil.get_terminal_size()
-      self.print_titlebar()
       self.used_lines = self.mode_content[self.mode]()
       self.vertical_pad()
+      self.set_titlebar()
       self.print_status_line()
       self.command, self.arguments = self.split_input(input("> "))
       self.process_command()
