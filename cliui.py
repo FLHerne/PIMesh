@@ -13,7 +13,7 @@ class UI:
     Mode.duck: "Anatid"
   }
   
- 
+
   def __init__(self, network):
     self.network = network
     self.quitting = False
@@ -32,6 +32,7 @@ class UI:
       "list": self.command_list,
       "view": self.command_view,
       "help": self.command_help,
+      "add": self.command_add,
       "quit": self.command_quit,
     }
     
@@ -111,6 +112,32 @@ class UI:
       self.current_entity = arguments[0]
     self.mode = self.Mode.links
     return("Switched to showing links for [" + self.current_entity + "]")
+  
+  def command_add(self, mode, arguments):
+    """Add a link from the current entity"""
+    if len(arguments) not in range(2, 4):
+      return "Encountered " + str(len(arguments)) + " argument(s), expected 2 or 3"
+    else:
+      tag, target, *rest = arguments[0], arguments[1]
+      inverse_tag = rest[0] if rest else Network.reciprocal(tag)
+      try:
+        network.unlink(current_name, tag, target, inverse_tag)
+        return 'Removed link "' + tag + ": " + target + '"'
+      except ValueError:
+        return "No such link."
+      
+  def command_add(self, mode, arguments):
+    """Add a link from the current entity"""
+    if len(arguments) not in range(2, 4):
+      return "Encountered " + str(len(arguments)) + " argument(s), expected 2 or 3"
+    else:
+      tag, target, *rest = arguments[0], arguments[1]
+      inverse_tag = rest[0] if rest else self.network.reciprocal(tag)
+      try:
+        self.network.addlink(self.current_entity, tag, target, inverse_tag)
+        return 'Added link "' + tag + ": " + target + '"'
+      except ValueError:
+        return "Error: Link already exists."
   
   def command_quit(self, mode, arguments):
       """Trigger a clean exit from the program, saving changes"""
