@@ -33,6 +33,7 @@ class UI:
       "view": self.command_view,
       "help": self.command_help,
       "add": self.command_add,
+      "remove": self.command_remove,
       "quit": self.command_quit,
     }
     
@@ -113,15 +114,15 @@ class UI:
     self.mode = self.Mode.links
     return("Switched to showing links for [" + self.current_entity + "]")
   
-  def command_add(self, mode, arguments):
+  def command_remove(self, mode, arguments):
     """Add a link from the current entity"""
     if len(arguments) not in range(2, 4):
       return "Encountered " + str(len(arguments)) + " argument(s), expected 2 or 3"
     else:
       tag, target, *rest = arguments[0], arguments[1]
-      inverse_tag = rest[0] if rest else Network.reciprocal(tag)
+      inverse_tag = rest[0] if rest else self.network.reciprocal(tag)
       try:
-        network.unlink(current_name, tag, target, inverse_tag)
+        self.network.unlink(self.current_entity, tag, target, inverse_tag)
         return 'Removed link "' + tag + ": " + target + '"'
       except ValueError:
         return "No such link."

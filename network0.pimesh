@@ -12,7 +12,6 @@ cabbage
 =======
 category: vegetables
 colour: green
-dependant on: sunlight
 
 potato
 ======
@@ -24,17 +23,10 @@ green
 colour of: cabbage
 colour of: grass
 
-sunlight
-========
-dependant on of: cabbage
-colour: yellow
-produces of: sun
-
 yellow
 ======
 colour of: potato
 colour of: sun
-colour of: sunlight
 
 grass
 =====
@@ -46,7 +38,6 @@ sun
 ===
 colour: yellow
 depends on of: grass
-produces: sunlight
 
 sheep
 =====
