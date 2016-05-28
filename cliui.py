@@ -44,8 +44,8 @@ class UI:
       
   def list_print(self):	
     """Print a list of every entity involved in one or more links"""
-    for entity in self.network.targets:
-      print(entity)
+    for n,entity in enumerate(self.network.targets):
+      print(str(n) + " | " + entity)
     self.titlebar = "Showing all entities"
     return len(self.network.targets)
   
