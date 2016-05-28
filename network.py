@@ -1,5 +1,3 @@
-import heapq
-
 from collections import namedtuple
 
 
@@ -76,6 +74,7 @@ class Network:
         if link in self._all_links:
             raise ValueError("Link exists!")
         self._all_links += [link, link.inverse()]
+        self._all_links.sort()
 
     def unlink(self, *args):
         """Remove all links in self[args]"""
@@ -88,6 +87,7 @@ class Network:
             try:
                 self._all_links.remove(link)
                 self._all_links.remove(link.inverse())
+                self._all_links.sort()
             except ValueError:
                 # Link was removed as inverse in previous loop
                 continue
