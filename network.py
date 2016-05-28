@@ -4,25 +4,11 @@ from collections import namedtuple
 Link = namedtuple('Link', ('origin', 'tag', 'target', 'inverse_tag'))
 Link.__new__.__defaults__ = (...,) * len(Link._fields)
 
-def __link_combined(self, other):
-    out_values = []
-    # Messy
-    for own_value, new_value in zip(self, other):
-        if new_value != own_value and new_value != ... and own_value != ...:
-            raise ValueError("Links are mutually exclusive!")
-        out_values.append(new_value if new_value != ... else own_value)
-    return Link(*out_values)
-
 def __link_inverse(self):
     """View a link from the other end (should be classmethod)"""
     return Link(self.target, self.inverse_tag, self.origin, self.tag)
 
-def __link_matches(self, other):
-    return all(query in (value, ...) for query, value in zip(other, self))
-
-Link.combined = __link_combined
 Link.inverse = __link_inverse
-Link.matches = __link_matches
 
 
 def unique(sequence):
@@ -53,12 +39,20 @@ class Network:
 
     def __getitem__(self, key):
         """Get subnetwork of links that match args"""
-        if not isinstance(key, tuple):
-            if isinstance(key, int):
-                return tuple(self._matching_links())[key]
-            key = (key,)
+        if isinstance(key, int):
+            return tuple(self._matching_links())[key]
 
-        new_filter = self.filter.combined(Link(*key))
+        if not isinstance(key, tuple):
+            key = (key,)  # Python doesn't tupleifiy a single argument.
+
+        def combine_params(current, new):
+            if new in (..., None):
+                return current
+            elif current not in (..., None, new):
+                raise ValueError("Incompatible parameter")
+            return new
+
+        new_filter = Link(*map(combine_params, self.filter, key))
 
         return Network(self._all_links, new_filter)
 
@@ -171,5 +165,8 @@ class Network:
                 file.write("\n")
 
     def _matching_links(self):
-        out = []
-        return (link for link in self._all_links if link.matches(self.filter))
+        def matches(link):
+            return all(filter_param in (link_param, ...) for
+                       filter_param, link_param in zip(self.filter, link))
+
+        return filter(matches, self._all_links)
