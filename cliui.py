@@ -63,7 +63,7 @@ class UI:
   def help_print(self):
     """Display the docstrings for all commands"""
     for command in self.commands.items():
-      print(command[0])
+      termcolor.cprint(command[0], attrs=['bold'])
       print("  " + command[1].__doc__ + '\n')
     self.titlebar = "Showing documentation"
     return len(self.commands)*3
