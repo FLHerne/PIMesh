@@ -77,28 +77,28 @@ class UI:
   def command_duck(self, mode, arguments):
     """Draw a duck"""
     if arguments:
-        return "Encountered " + str(len(arguments)) + " arguments, expected 0"
+        return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
     self.mode = self.Mode.duck
-    return("Switched to duck mode")
+    return("Switched to  duck mode")
   
   def command_list(self, mode, arguments):
     """Print a list of every entity involved in one of more links"""
     if arguments:
-        return "Encountered " + str(len(arguments)) + " arguments, expected 0"
+        return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
     self.mode = self.Mode.list
     return("Switched to entity List mode")
   
   def command_help(self, mode, arguments):
     """List and describe all commands"""
     if arguments:
-        return "Encountered " + str(len(arguments)) + " arguments, expected 0"
+        return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
     self.mode = self.Mode.help
     return("Switched to help mode")
   
   def command_view(self, mode, arguments):
     """View a specific entity"""
     if len(arguments) != 1:
-      return "Error: Found " + str(len(arguments)) + " arguments - expected 1"
+      return "Error: Found " + str(len(arguments)) + " argument(s) - expected 1"
     self.mode = self.Mode.links
     self.current_entity = arguments[0]
     return("Switched to showing links for [" + self.current_entity + "]")
@@ -106,7 +106,7 @@ class UI:
   def command_quit(self, mode, arguments):
       """Trigger a clean exit from the program, saving changes"""
       if arguments:
-        return "Encountered " + str(len(arguments)) + " arguments, expected 0"
+        return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
       self.quitting = True
       return 'Now quitting'
   
