@@ -100,7 +100,13 @@ class UI:
     if len(arguments) != 1:
       return "Error: Found " + str(len(arguments)) + " argument(s) - expected 1"
     self.mode = self.Mode.links
-    self.current_entity = arguments[0]
+    if int(arguments[0]):
+      try:
+        self.current_entity = self.network.targets[int(arguments[0])]
+      except IndexError:
+        return "Could not switch to entity " + arguments[0] + " - index not in use"
+    else:
+      self.current_entity = arguments[0]
     return("Switched to showing links for [" + self.current_entity + "]")
   
   def command_quit(self, mode, arguments):
