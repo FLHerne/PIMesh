@@ -27,6 +27,7 @@ colour
 ======
 category of: green
 category of: yellow
+category of: black
 
 potato
 ======
@@ -81,10 +82,7 @@ category: celestial body
 made of: cheese :makes up
 example: moon
 example of: moon
-
-cheese
-======
-makes up: moon :made of
+colour: black
 
 smile
 =====
@@ -93,4 +91,13 @@ owner: cheshire cat
 teapot
 ======
 contains: dormouse :lives in
+
+cheese
+======
+makes up: moon :made of
+
+black
+=====
+colour of: moon
+category: colour
 

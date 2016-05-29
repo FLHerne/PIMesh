@@ -83,50 +83,50 @@ class UI:
       
   ### 
   
-  def command_duck(self, mode, arguments):
+  def command_duck(self, mode, args):
     """Draw a duck"""
-    if arguments:
-        return self.arguments_error(len(arguments), "0")
+    if args:
+        return self.args_error(len(args), "0")
     self.mode = self.Mode.duck
     return("Switched to duck mode")
   
-  def command_list(self, mode, arguments):
+  def command_list(self, mode, args):
     """Print a list of every entity involved in one of more links"""
-    if arguments:
-        return self.arguments_error(len(arguments), "0")
+    if args:
+        return self.args_error(len(args), "0")
     self.mode = self.Mode.list
     return("Switched to entity list mode")
   
-  def command_help(self, mode, arguments):
+  def command_help(self, mode, args):
     """List and describe all commands"""
-    if arguments:
-        return self.arguments_error(len(arguments), "0")
+    if args:
+        return self.args_error(len(args), "0")
     self.mode = self.Mode.help
     return("Switched to help mode")
   
-  def command_view(self, mode, arguments):
+  def command_view(self, mode, args):
     """View a specific entity. Note that you can refer to entities using thier index (line number)"""
-    if len(arguments) != 1:
-        return self.arguments_error(len(arguments), "1")
+    if len(args) != 1:
+        return self.args_error(len(args), "1")
     try:
       try:
         if self.mode == self.Mode.links:
-          self.current_entity = self.network[self.current_entity].targets[int(arguments[0])]
+          self.current_entity = self.network[self.current_entity].targets[int(args[0])]
         else:
-          self.current_entity = self.network.targets[int(arguments[0])]
+          self.current_entity = self.network.targets[int(args[0])]
       except IndexError:
-        return "Could not switch to entity " + arguments[0] + " - index not in use"
+        return "Could not switch to entity " + args[0] + " - index not in use"
     except ValueError:
-      self.current_entity = arguments[0]
+      self.current_entity = args[0]
     self.mode = self.Mode.links
     return("Switched to showing links for '" + self.current_entity + "'")
   
-  def command_remove(self, mode, arguments):
+  def command_remove(self, mode, args):
     """Remove a link from the current entity"""
-    if len(arguments) not in range(2, 4):
-      return self.arguments_error(len(arguments), "2 or 3")
+    if len(args) not in range(2, 4):
+      return self.args_error(len(args), "2 or 3")
     else:
-      tag, target, *rest = arguments
+      tag, target, *rest = args
       inverse_tag = rest[0] if rest else self.network.reciprocal(tag)
       try:
         self.network.unlink(self.current_entity, tag, target, inverse_tag)
@@ -134,12 +134,12 @@ class UI:
       except ValueError:
         return 'No such link: "' + tag + ": " + target + '"'
       
-  def command_add(self, mode, arguments):
+  def command_add(self, mode, args):
     """Add a link from the current entity"""
-    if len(arguments) not in range(2, 4):
-      return self.arguments_error(len(arguments), "2 or 3")
+    if len(args) not in range(2, 4):
+      return self.args_error(len(args), "2 or 3")
     else:
-      tag, target, *rest = arguments
+      tag, target, *rest = args
       inverse_tag = rest[0] if rest else self.network.reciprocal(tag)
       try:
         self.network.addlink(self.current_entity, tag, target, inverse_tag)
@@ -147,10 +147,10 @@ class UI:
       except ValueError:
         return 'Error: Link "' + tag + ": " + target + '"already exists.'
   
-  def command_quit(self, mode, arguments):
+  def command_quit(self, mode, args):
       """Trigger a clean exit from the program, saving changes"""
-      if arguments:
-        return self.arguments_error(len(arguments), "0")
+      if args:
+        return self.args_error(len(args), "0")
       self.quitting = True
       return 'Now quitting'
   
@@ -163,31 +163,31 @@ class UI:
       return noun + "es"
     return noun + "s"
   
-  def arguments_error(self, encountered, requirement):
-    return "Encountered " + str(encountered) + " " + self.pluralise("argument", encountered) + ", expected " + requirement
+  def args_error(self, encountered, requirement):
+    return "Encountered " + str(encountered) + " " + self.pluralise("arg", encountered) + ", expected " + requirement
   
   def process_command(self):
-    """Choose which commnd to feed arguments to"""
+    """Choose which commnd to feed args to"""
     try:
       if False:
-        self.arguments.append(str(int(self.command)))
+        self.args.append(str(int(self.command)))
         self.command = "view"
     except ValueError:
       pass
     try:
-      self.status = self.commands[self.command](self.mode, self.arguments)
+      self.status = self.commands[self.command](self.mode, self.args)
     except KeyError:
       self.status = "Unknown command: " + self.command
     
       
   def split_input(self, user_input):
     """Split user input into a command and a list of arguments"""
-    command, *arguments = user_input.split(" ", 1)
-    if len(arguments) > 0:
-      arguments = arguments[0].split(":")
-    arguments = [arg.strip() for arg in arguments]
-    arguments = [arg for arg in arguments if arg]
-    return command, arguments
+    command, *args = user_input.split(" ", 1)
+    if len(args) > 0:
+      args = args[0].split(":")
+    args = [arg.strip() for arg in args]
+    args = [arg for arg in args if arg]
+    return command, args
     
   def print_status_line(self):
     """Draw the statusbar"""
@@ -211,7 +211,7 @@ class UI:
       self.vertical_pad()
       self.print_titlebar()
       self.print_status_line()
-      self.command, self.arguments = self.split_input(input("> "))
+      self.command, self.args = self.split_input(input("> "))
       self.process_command()
       os.system("clear")
     
