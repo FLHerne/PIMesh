@@ -98,7 +98,7 @@ class UI:
     return("Switched to help mode")
   
   def command_view(self, mode, arguments):
-    """View a specific entity"""
+    """View a specific entity. Note that you can refer to entities using thier index (line number)"""
     if len(arguments) != 1:
       return "Error: Found " + str(len(arguments)) + " argument(s) - expected 1"
     try:
@@ -151,9 +151,16 @@ class UI:
   
   def process_command(self):
     try:
+      if False:
+        self.arguments.append(str(int(self.command)))     # ALL HORRIBLE AND BROKEN HERE! FIXME FIXME FIXME
+        self.command = "view"
+    except ValueError:
+      pass
+    try:
       self.status = self.commands[self.command](self.mode, self.arguments)
     except KeyError:
       self.status = "Unknown command: " + self.command
+    
       
   def split_input(self, user_input):
     """Split user input into a command and a list of arguments"""
