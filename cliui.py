@@ -80,32 +80,33 @@ class UI:
     self.titlebar = "Showing wildfowl"
     return 4
       
-  ###########
+  ### 
+  
   def command_duck(self, mode, arguments):
     """Draw a duck"""
     if arguments:
-        return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
+        return self.arguments_error(len(arguments), "0")
     self.mode = self.Mode.duck
     return("Switched to duck mode")
   
   def command_list(self, mode, arguments):
     """Print a list of every entity involved in one of more links"""
     if arguments:
-        return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
+        return self.arguments_error(len(arguments), "0")
     self.mode = self.Mode.list
     return("Switched to entity list mode")
   
   def command_help(self, mode, arguments):
     """List and describe all commands"""
     if arguments:
-        return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
+        return self.arguments_error(len(arguments), "0")
     self.mode = self.Mode.help
     return("Switched to help mode")
   
   def command_view(self, mode, arguments):
     """View a specific entity. Note that you can refer to entities using thier index (line number)"""
     if len(arguments) != 1:
-      return "Error: Found " + str(len(arguments)) + " argument(s) - expected 1"
+        return self.arguments_error(len(arguments), "1")
     try:
       try:
         if self.mode == self.Mode.links:
@@ -122,7 +123,7 @@ class UI:
   def command_remove(self, mode, arguments):
     """Remove a link from the current entity"""
     if len(arguments) not in range(2, 4):
-      return "Encountered " + str(len(arguments)) + " argument(s), expected 2 or 3"
+      return self.arguments_error(len(arguments), "2 or 3")
     else:
       tag, target, *rest = arguments
       inverse_tag = rest[0] if rest else self.network.reciprocal(tag)
@@ -135,7 +136,7 @@ class UI:
   def command_add(self, mode, arguments):
     """Add a link from the current entity"""
     if len(arguments) not in range(2, 4):
-      return "Encountered " + str(len(arguments)) + " argument(s), expected 2 or 3"
+      return self.arguments_error(len(arguments), "2 or 3")
     else:
       tag, target, *rest = arguments
       inverse_tag = rest[0] if rest else self.network.reciprocal(tag)
@@ -148,11 +149,21 @@ class UI:
   def command_quit(self, mode, arguments):
       """Trigger a clean exit from the program, saving changes"""
       if arguments:
-        return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
+        return self.arguments_error(len(arguments), "0")
       self.quitting = True
       return 'Now quitting'
   
-  ###########
+  ###
+  
+  def pluralise(self, noun, number):
+    if number == 1:
+      return noun
+    if noun[-1] == 's':
+      return noun + "es"
+    return noun + "s"
+  
+  def arguments_error(self, encountered, requirement):
+    return "Encountered " + str(encountered) + " " + self.pluralise("argument", encountered) + ", expected " + requirement
   
   def process_command(self):
     """Choose which commnd to feed arguments to"""
@@ -175,9 +186,6 @@ class UI:
       arguments = arguments[0].split(":")
     arguments = [arg.strip() for arg in arguments]
     arguments = [arg for arg in arguments if arg]
-    #for n, argument in enumerate(arguments):
-    #  if argument:
-    #    arguments.pop(n)
     return command, arguments
     
   def print_status_line(self):
