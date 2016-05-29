@@ -130,7 +130,7 @@ class UI:
         self.network.unlink(self.current_entity, tag, target, inverse_tag)
         return 'Removed link "' + tag + ": " + target + '"'
       except ValueError:
-        return "No such link."
+        return 'No such link: "' + tag + ": " + target + '"'
       
   def command_add(self, mode, arguments):
     """Add a link from the current entity"""
@@ -143,7 +143,7 @@ class UI:
         self.network.addlink(self.current_entity, tag, target, inverse_tag)
         return 'Added link "' + tag + ": " + target + '"'
       except ValueError:
-        return "Error: Link already exists."
+        return 'Error: Link "' + tag + ": " + target + '"already exists.'
   
   def command_quit(self, mode, arguments):
       """Trigger a clean exit from the program, saving changes"""
@@ -158,7 +158,7 @@ class UI:
     """Choose which commnd to feed arguments to"""
     try:
       if False:
-        self.arguments.append(str(int(self.command)))     # ALL HORRIBLE AND BROKEN HERE! FIXME FIXME FIXME
+        self.arguments.append(str(int(self.command)))
         self.command = "view"
     except ValueError:
       pass
@@ -173,8 +173,11 @@ class UI:
     command, *arguments = user_input.split(" ", 1)
     if len(arguments) > 0:
       arguments = arguments[0].split(":")
-    for n, argument in enumerate(arguments):
-      arguments[n] = argument.strip()
+    arguments = [arg.strip() for arg in arguments]
+    arguments = [arg for arg in arguments if arg]
+    #for n, argument in enumerate(arguments):
+    #  if argument:
+    #    arguments.pop(n)
     return command, arguments
     
   def print_status_line(self):

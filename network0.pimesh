@@ -51,14 +51,6 @@ cheshire cat
 ============
 owner of: smile
 
-moon
-====
-made of: cheese
-
-cheese
-======
-made: moon
-
 dormouse
 ========
 lives in: teapot :contains
@@ -66,4 +58,12 @@ lives in: teapot :contains
 teapot
 ======
 contains: dormouse :lives in
+
+moon
+====
+made of: cheese :makes up
+
+cheese
+======
+makes up: moon :made of
 
