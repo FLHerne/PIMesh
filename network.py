@@ -102,10 +102,17 @@ class Network:
             self.unlink(new)
             raise
 
+    def origin_counts(self):
+        """Get namedtuple('origin', 'count'), reverse-sorted by count."""
+        OC = Enum('OriginCount', ('count', 'name'))
+        return sorted((OC(len(self[origin]), origin) for origin in self.origins),
+                      reverse=True)
+
     # vvv Repetitive
     @property
     def origins(self):
-        return sorted(unique(link.origin for link in self))
+        # Sorted already, because first element in link.
+        return unique(link.origin for link in self)
 
     @property
     def tags(self):
