@@ -124,7 +124,7 @@ class UI:
     if len(arguments) not in range(2, 4):
       return "Encountered " + str(len(arguments)) + " argument(s), expected 2 or 3"
     else:
-      tag, target, *rest = arguments[0], arguments[1]
+      tag, target, *rest = arguments
       inverse_tag = rest[0] if rest else self.network.reciprocal(tag)
       try:
         self.network.unlink(self.current_entity, tag, target, inverse_tag)
@@ -137,7 +137,7 @@ class UI:
     if len(arguments) not in range(2, 4):
       return "Encountered " + str(len(arguments)) + " argument(s), expected 2 or 3"
     else:
-      tag, target, *rest = arguments[0], arguments[1]
+      tag, target, *rest = arguments
       inverse_tag = rest[0] if rest else self.network.reciprocal(tag)
       try:
         self.network.addlink(self.current_entity, tag, target, inverse_tag)
@@ -172,7 +172,9 @@ class UI:
     """Split user input into a command and a list of arguments"""
     command, *arguments = user_input.split(" ", 1)
     if len(arguments) > 0:
-        arguments = arguments[0].split(": ")
+      arguments = arguments[0].split(":")
+    for n, argument in enumerate(arguments):
+      arguments[n] = argument.strip()
     return command, arguments
     
   def print_status_line(self):
