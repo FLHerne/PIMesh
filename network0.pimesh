@@ -65,13 +65,6 @@ celestial body
 category of: sun
 category of: moon
 
-moon
-====
-category: celestial body
-made of: cheese :makes up
-example: moon
-example of: moon
-
 cheshire cat
 ============
 category: animal
@@ -81,6 +74,13 @@ dormouse
 ========
 category: animal
 lives in: teapot :contains
+
+moon
+====
+category: celestial body
+made of: cheese :makes up
+example: moon
+example of: moon
 
 cheese
 ======

@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+#Top-level wrapper script for a general-purpose information-management tool
+
 import sys
 from network import Network
 from cliui import UI

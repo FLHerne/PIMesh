@@ -1,4 +1,5 @@
 # Code by CEDStone, debated with and nitpicked by FLHerne
+# User-interface for a general-purpose information-management tool
 
 import shutil
 import termcolor
