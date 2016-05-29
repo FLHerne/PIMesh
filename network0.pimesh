@@ -1,103 +1,28 @@
 cabbage
 =======
+category: vegetables
 colour: green
-category: plant
+
+grass
+=====
+colour: green
+eaten by: sheep
 
 green
 =====
 colour of: cabbage
 colour of: grass
-category: colour
-
-plant
-=====
-category of: cabbage
-category of: potato
-category of: grass
-category of: turnip
-
-grass
-=====
-colour: green
-category: plant
-eaten by: sheep
-depends on: sun
-
-colour
-======
-category of: green
-category of: yellow
-category of: black
-
-potato
-======
-category: plant
-colour: yellow
-
-turnip
-======
-category: plant
 
 sheep
 =====
 eaten by of: grass
-category: animal
 
-sun
-===
-depends on of: grass
-colour: yellow
-category: celestial body
-
-yellow
+turnip
 ======
-category: colour
-colour of: potato
-colour of: sun
+category: vegetables
 
-animal
-======
-category of: sheep
-category of: cheshire cat
-category of: dormouse
-
-celestial body
-==============
-category of: sun
-category of: moon
-
-cheshire cat
-============
-category: animal
-owner of: smile
-
-dormouse
-========
-category: animal
-lives in: teapot :contains
-
-moon
-====
-category: celestial body
-made of: cheese :makes up
-example: moon
-example of: moon
-colour: black
-
-smile
-=====
-owner: cheshire cat
-
-teapot
-======
-contains: dormouse :lives in
-
-cheese
-======
-makes up: moon :made of
-
-black
-=====
-colour of: moon
-category: colour
+vegetables
+==========
+category of: cabbage
+category of: turnip
 
