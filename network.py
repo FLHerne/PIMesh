@@ -104,7 +104,7 @@ class Network:
 
     def origin_counts(self):
         """Get namedtuple('origin', 'count'), reverse-sorted by count."""
-        OC = Enum('OriginCount', ('count', 'name'))
+        OC = namedtuple('OriginCount', ('count', 'name'))
         return sorted((OC(len(self[origin]), origin) for origin in self.origins),
                       reverse=True)
 

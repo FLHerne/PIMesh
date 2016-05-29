@@ -51,8 +51,9 @@ class UI:
       
   def list_print(self):	
     """Print a list of every entity involved in one or more links"""
-    for n,entity in enumerate(self.network.targets):
-      print((str(n).rjust(2) + " │ " + entity + "\t(" + str(len(self.network[entity])) + ")").expandtabs(5))
+    for n, entity in enumerate(self.network.origin_counts()):
+      #print(str(n) + entity.name + str(entity.count))
+      print((str(n).rjust(2) + " │ " + entity.name + "\t(" + str(entity.count) + ")").expandtabs(5))
     self.titlebar = "Showing all entities"
     return len(self.network.targets)
   
@@ -123,11 +124,11 @@ class UI:
   
   def command_remove(self, mode, args):
     """Remove a link from the current entity"""
-    if len(args) not in range(2, 4):
-      return self.args_error(len(args), "2 or 3")
+    if len(args) not in range(1, 4):
+      return self.args_error(len(args), "1 to 3")
     else:
       tag, target, *rest = args
-      inverse_tag = rest[0] if rest else self.network.reciprocal(tag)
+      inverse_tag = rest[0] if rest else ...
       try:
         self.network.unlink(self.current_entity, tag, target, inverse_tag)
         return 'Removed link "' + tag + ": " + target + '"'
