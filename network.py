@@ -1,4 +1,5 @@
 from collections import namedtuple
+from enum import Enum
 
 
 Link = namedtuple('Link', ('origin', 'tag', 'target', 'inverse_tag'))
@@ -119,56 +120,61 @@ class Network:
         return sorted(unique(link.inverse_tag for link in self))
 
     @classmethod
-    def from_file(cls, filename):
-        with open(filename) as file:
-            new_net = cls()
+    def from_file(cls, file):
+        """Read a new network from `file`."""
+        LineType = Enum('LineType', ('origin', 'underline', 'link'))
+        expected = LineType.origin
+        new_net = cls()
+        current_origin = None
 
-            missing_inverses = 0
-            state = 'NONE'
-            new_origin = None
-            for line in file:
-                line = line.strip()
-                if state is 'NONE':
-                    if not line:
-                        continue
-                    if ':' in line or ',' in line:
-                        raise ValueError("Comma/colons in entity name!")
-                    new_origin = line
-                    state = 'NAME'
-                    continue
-                if state is 'NAME':
-                    if line == '=' * len(new_origin):
-                        state = 'BODY'
-                        continue
-                    raise ValueError("Expected underline!")
-                if state is 'BODY':
-                    if not line:
-                        state = 'NONE'
-                        continue
-                    tag, target, *rest = line.split(':')
-                    inverse_tag = rest[0] if rest else cls.reciprocal(tag.strip())
-                    try:
-                        new_net.addlink(new_origin, tag.strip(),
-                                     target.strip(), inverse_tag.strip())
-                        missing_inverses += 1
-                    except ValueError:
-                        missing_inverses -= 1
-            if missing_inverses:
-                # Who cares?
-                pass
-            return new_net
+        for line_num, line in enumerate(file, start=1):
+            def parse_error(message):
+                raise ValueError("Line %d: %s" %(line_num, message))
 
-    def to_file(self, filename):
-        with open(filename, 'w') as file:
-            for origin in self.origins:
-                file.write(origin + "\n")
-                file.write("=" * len(origin) + "\n")
-                for link in self[origin]:
-                    outline = "%s: %s" %(link.tag, link.target)
-                    if link.inverse_tag != Network.reciprocal(link.tag):
-                        outline += " :%s" %(link.inverse_tag)
-                    file.write(outline + "\n")
-                file.write("\n")
+            if expected == LineType.underline:
+                if line.rstrip() != "=" * len(current_origin):
+                    raise parse_error("missing underline.")
+                expected = LineType.link
+                continue
+
+            if not line.strip():
+                expected = LineType.origin
+                continue
+
+            parts = [part.strip() for part in line.split(":")]
+            if expected == LineType.origin:
+                if len(parts) > 1:
+                    parse_error("colon in entity name.")
+                current_origin = parts[0]
+                expected = LineType.underline
+                continue
+
+            if expected == LineType.link:
+                if not current_origin:
+                    parse_error("link outside entity block.")
+                if not 2 <= len(parts) <= 3:
+                    parse_error("invalid link definition.")
+                if not all(parts):
+                    parse_error("blank tag or target.")
+                if len(parts) == 2:  # Implicit inverse-tag
+                    parts.append(cls.reciprocal(parts[0]))
+                try:
+                    new_net.addlink(current_origin, *parts)
+                except ValueError: # Added as inverse of earlier link.
+                    pass
+        return new_net
+
+    def to_file(self, file):
+        """Save the network to a file."""
+        for origin in self.origins:
+            file.write(origin + "\n")
+            file.write("=" * len(origin) + "\n")
+            for link in self[origin]:
+                outline = "%s: %s" %(link.tag, link.target)
+                if link.inverse_tag != Network.reciprocal(link.tag):
+                    outline += " :%s" %(link.inverse_tag)
+                file.write(outline + "\n")
+            file.write("\n")
 
     def _matching_links(self):
         def matches(link):
