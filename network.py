@@ -64,6 +64,8 @@ class Network:
                 link[n] = implicit_prop
         if ... in link:
             raise ValueError("Link not fully specified!")
+        if any(':' in prop for prop in link):
+            raise ValueError("Colons are forbidden in tags or entity names.")
 
         if link in self._all_links:
             raise ValueError("Link exists!")
