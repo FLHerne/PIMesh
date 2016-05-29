@@ -62,6 +62,8 @@ contains: dormouse :lives in
 moon
 ====
 made of: cheese :makes up
+example: moon
+example of: moon
 
 cheese
 ======
