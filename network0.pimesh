@@ -51,3 +51,11 @@ cheshire cat
 ============
 owner of: smile
 
+dormouse
+========
+lives in: teapot
+
+teapot
+======
+lives in of: dormouse
+
