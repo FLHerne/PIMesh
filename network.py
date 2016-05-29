@@ -166,6 +166,7 @@ class Network:
 
     def to_file(self, file):
         """Save the network to a file."""
+        file.truncate()
         for origin in self.origins:
             file.write(origin + "\n")
             file.write("=" * len(origin) + "\n")

@@ -1,28 +1,104 @@
-cabbage
-=======
-category: vegetables
-colour: green
+dormouse
+========
+lives in: teapot :contains
 
-grass
-=====
-colour: green
-eaten by: sheep
-
-green
-=====
-colour of: cabbage
-colour of: grass
-
-sheep
-=====
-eaten by of: grass
-
-turnip
+teapot
 ======
-category: vegetables
+contains: dormouse :lives in
 
-vegetables
+Alice
+=====
+guest of: tea party
+
+asleep
+======
+state of: dormouse
+
+dormouse
+========
+guest of: tea party
+lives in: teapot :contains
+state: asleep
+
+hats
+====
+made by: mad hatter :makes
+
+hatter
+======
+host of: tea party
+state: mad
+
+mad
+===
+state of: hatter
+state of: march hare
+
+mad hatter
 ==========
-category of: cabbage
-category of: turnip
+makes: hats :made by
+
+march hare
+==========
+guest of: tea party
+state: mad
+
+tea party
+=========
+guest: Alice
+guest: dormouse
+guest: march hare
+host: hatter
+
+teapot
+======
+contains: dormouse :lives in
+
+Alice
+=====
+guest of: tea party
+
+asleep
+======
+state of: dormouse
+
+dormouse
+========
+guest of: tea party
+lives in: teapot :contains
+state: asleep
+
+hats
+====
+made by: mad hatter :makes
+
+hatter
+======
+host of: tea party
+state: mad
+
+mad
+===
+state of: hatter
+state of: march hare
+
+mad hatter
+==========
+makes: hats :made by
+
+march hare
+==========
+guest of: tea party
+state: mad
+
+tea party
+=========
+guest: Alice
+guest: dormouse
+guest: march hare
+host: hatter
+
+teapot
+======
+contains: dormouse :lives in
 
