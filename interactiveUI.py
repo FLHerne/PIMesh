@@ -30,7 +30,7 @@ print("\x1B]0;%s\x07" % "PIMesh") # Set window title
 filename = "network0.pimesh"            # Currently fixed filename - should it really be an argument when starting the script?
 
 try:
-    network = Network.from_file(filename)         # Note that this does not (and should not) create a new file
+    network = Network.from_file(open(filename))
     UI.status = "Loaded PIMesh network from file"
 except FileNotFoundError:
     network = Network()
@@ -234,7 +234,7 @@ while not quitting:
 
 os.system("clear")
 try:
-    network.to_file(filename)
+    network.to_file(open(filename, 'w'))
     print("Saved session changes to file. \nPIMesh quitting...")
 except:
     print("Saving to file failed!")
