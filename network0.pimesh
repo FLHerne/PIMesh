@@ -351,3 +351,109 @@ teapot
 ======
 contains: dormouse :lives in
 
+Alice
+=====
+guest of: tea party
+state: confused
+
+asleep
+======
+state of: dormouse
+
+confused
+========
+state of: Alice
+
+dormouse
+========
+guest of: tea party
+lives in: teapot :contains
+state: asleep
+
+hats
+====
+made by: mad hatter :makes
+
+hatter
+======
+host of: tea party
+state: mad
+
+mad
+===
+state of: hatter
+state of: march hare
+
+mad hatter
+==========
+makes: hats :made by
+
+march hare
+==========
+guest of: tea party
+state: mad
+
+tea party
+=========
+guest: Alice
+guest: dormouse
+guest: march hare
+host: hatter
+
+teapot
+======
+contains: dormouse :lives in
+
+Alice
+=====
+guest of: tea party
+state: confused
+
+asleep
+======
+state of: dormouse
+
+confused
+========
+state of: Alice
+
+dormouse
+========
+guest of: tea party
+lives in: teapot :contains
+state: asleep
+
+hats
+====
+made by: mad hatter :makes
+
+hatter
+======
+host of: tea party
+state: mad
+
+mad
+===
+state of: hatter
+state of: march hare
+
+mad hatter
+==========
+makes: hats :made by
+
+march hare
+==========
+guest of: tea party
+state: mad
+
+tea party
+=========
+guest: Alice
+guest: dormouse
+guest: march hare
+host: hatter
+
+teapot
+======
+contains: dormouse :lives in
+
