@@ -103,10 +103,10 @@ class Network:
             raise
 
     def origin_counts(self):
-        """Get namedtuple('origin', 'count'), reverse-sorted by count."""
-        OC = Enum('OriginCount', ('count', 'name'))
-        return sorted((OC(len(self[origin]), origin) for origin in self.origins),
-                      reverse=True)
+        """Get namedtuple('name', 'count'), reverse-sorted by count."""
+        OC = namedtuple('OriginCount', ('name', 'count'))
+        return sorted((OC(name, len(self[name])) for name in self.origins),
+                      key=lambda oc: (-oc.count, oc.name))
 
     # vvv Repetitive
     @property
