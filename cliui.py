@@ -1,3 +1,5 @@
+# Code by CEDStone, debated with and nitpicked by FLHerne
+
 import shutil
 import termcolor
 import os
@@ -5,16 +7,18 @@ from enum import Enum
 
 
 class UI:
+  """A command-line user interface to the pimesh network backend"""
   Mode = Enum('Mode', ('list', 'links', 'help', 'duck'))
   mode_names = {
-    Mode.list: "List of all entities",
-    Mode.links: "Single entity view",
+    Mode.list: "List of Entities",
+    Mode.links: "Single Entity Links",
     Mode.help: "Documentation",
     Mode.duck: "Anatid"
   }
   
 
   def __init__(self, network):
+    """This doesn't really need a docstring, does it?"""
     self.network = network
     self.quitting = False
     
@@ -25,7 +29,7 @@ class UI:
     self.titlebar = "PIMesh"
     self.cols, self.lines = shutil.get_terminal_size()
     
-    self.used_lines = 0
+    self.used_lines = 0     # Used for vertical padding
     
     self.commands = {
       "duck": self.command_duck,
@@ -47,19 +51,19 @@ class UI:
   def list_print(self):	
     """Print a list of every entity involved in one or more links"""
     for n,entity in enumerate(self.network.targets):
-      print(str(n).rjust(2) + " | " + entity)
+      print(str(n).rjust(2) + " │ " + entity)
     self.titlebar = "Showing all entities"
     return len(self.network.targets)
   
   def links_print(self):	
     #print("links go here")
     for n, link in enumerate(self.network[self.current_entity]):
-      print(str(n).rjust(2) + " | " + link.tag + ": "+ link.target)
+      print(str(n).rjust(2) + " │ " + link.tag + ": "+ link.target)
     number_of_links = len(self.network[self.current_entity])
     if number_of_links:
-      self.titlebar = "Showing all links associated with [" + self.current_entity + "]"
+      self.titlebar = "Showing all links associated with '" + self.current_entity + "'"
     else:
-      self.titlebar = "There are currently no links associated with [" + self.current_entity + "]"
+      self.titlebar = "There are currently no links associated with '" + self.current_entity + "'"
     return number_of_links
   
   def help_print(self):
@@ -70,7 +74,8 @@ class UI:
     self.titlebar = "Showing documentation"
     return len(self.commands)*3
   
-  def duck_print(self):	
+  def duck_print(self):
+    """Draw an ASCII-art duck"""
     print("\n   >(')____, \n    (` =~~/  \n ~^~^`---'~^~^~")
     self.titlebar = "Showing wildfowl"
     return 4
@@ -81,14 +86,14 @@ class UI:
     if arguments:
         return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
     self.mode = self.Mode.duck
-    return("Switched to  duck mode")
+    return("Switched to duck mode")
   
   def command_list(self, mode, arguments):
     """Print a list of every entity involved in one of more links"""
     if arguments:
         return "Encountered " + str(len(arguments)) + " argument(s), expected 0"
     self.mode = self.Mode.list
-    return("Switched to entity List mode")
+    return("Switched to entity list mode")
   
   def command_help(self, mode, arguments):
     """List and describe all commands"""
@@ -112,7 +117,7 @@ class UI:
     except ValueError:
       self.current_entity = arguments[0]
     self.mode = self.Mode.links
-    return("Switched to showing links for [" + self.current_entity + "]")
+    return("Switched to showing links for '" + self.current_entity + "'")
   
   def command_remove(self, mode, arguments):
     """Remove a link from the current entity"""
@@ -150,6 +155,7 @@ class UI:
   ###########
   
   def process_command(self):
+    """Choose which commnd to feed arguments to"""
     try:
       if False:
         self.arguments.append(str(int(self.command)))     # ALL HORRIBLE AND BROKEN HERE! FIXME FIXME FIXME
@@ -170,30 +176,26 @@ class UI:
     return command, arguments
     
   def print_status_line(self):
-    self.status_line = (" " + self.status).ljust(self.cols)
-    termcolor.cprint(self.status_line, attrs=['reverse'])
+    """Draw the statusbar"""
+    termcolor.cprint((" " + self.status).ljust(self.cols), attrs=['reverse'])
     
-  def set_titlebar(self):
-    modename = self.mode_names[self.mode]
-    #self.titlebar = modename
-    #padsize = (self.cols-len(self.titlebar))/2
-    #padding = (" " * int(padsize))
-    #titlebar_string = padding + self.titlebar + padding
-    #if len(titlebar_string) < self.cols:
-    #  titlebar_string += " "
-    #termcolor.cprint(titlebar_string, attrs=['reverse'])
+  def print_titlebar(self):
+    """Draw titlebar to the terminal, and attempt to set the WM titlebar (if available)"""
+    #modename = self.mode_names[self.mode]
     termcolor.cprint((" " + self.titlebar).ljust(self.cols), attrs=['reverse'])
     print("\x1B]0;%s\x07" % ("PIMesh: " + self.titlebar), end='')
     
   def vertical_pad(self):
+    """Pad content to ensure statusbar and prompt are at bottom of display"""
     print("\n" * (self.lines-(self.used_lines+4)))
     
   def run(self):
+    """Main loop, program spends most of its time in here"""
     while not self.quitting:
       self.cols, self.lines = shutil.get_terminal_size()
       self.used_lines = self.mode_content[self.mode]()
       self.vertical_pad()
-      self.set_titlebar()
+      self.print_titlebar()
       self.print_status_line()
       self.command, self.arguments = self.split_input(input("> "))
       self.process_command()
