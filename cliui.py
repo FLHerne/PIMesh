@@ -47,14 +47,14 @@ class UI:
   def list_print(self):	
     """Print a list of every entity involved in one or more links"""
     for n,entity in enumerate(self.network.targets):
-      print(str(n) + " | " + entity)
+      print(str(n).rjust(2) + " | " + entity)
     self.titlebar = "Showing all entities"
     return len(self.network.targets)
   
   def links_print(self):	
     #print("links go here")
     for n, link in enumerate(self.network[self.current_entity]):
-      print(str(n) + " | " + link.tag + ": "+ link.target)
+      print(str(n).rjust(2) + " | " + link.tag + ": "+ link.target)
     number_of_links = len(self.network[self.current_entity])
     if number_of_links:
       self.titlebar = "Showing all links associated with [" + self.current_entity + "]"
@@ -170,7 +170,7 @@ class UI:
     return command, arguments
     
   def print_status_line(self):
-    self.status_line = " " + self.status + (" " * (self.cols - len(self.status) - 1))
+    self.status_line = (" " + self.status).ljust(self.cols)
     termcolor.cprint(self.status_line, attrs=['reverse'])
     
   def set_titlebar(self):
@@ -182,7 +182,7 @@ class UI:
     #if len(titlebar_string) < self.cols:
     #  titlebar_string += " "
     #termcolor.cprint(titlebar_string, attrs=['reverse'])
-    termcolor.cprint((" " + self.titlebar + (" " * (self.cols - len(self.titlebar) - 1))), attrs=['reverse'])
+    termcolor.cprint((" " + self.titlebar).ljust(self.cols), attrs=['reverse'])
     print("\x1B]0;%s\x07" % ("PIMesh: " + self.titlebar), end='')
     
   def vertical_pad(self):

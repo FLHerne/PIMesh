@@ -43,3 +43,11 @@ sheep
 =====
 eaten by of: grass
 
+smile
+=====
+owner: cheshire cat
+
+cheshire cat
+============
+owner of: smile
+
