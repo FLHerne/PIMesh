@@ -59,11 +59,15 @@ class Network:
     def addlink(self, *args):
         """Add link, as Link or separate args"""
         link = args[0] if len(args) == 1 else Link(*args)
+
         for n, implicit_prop in enumerate(self.filter):
             if link[n] == ...:
                 link[n] = implicit_prop
+
         if ... in link:
             raise ValueError("Link not fully specified!")
+        if not all(prop.strip() for prop in link):
+            raise ValueError("Names must not be empty or only whitespace.")
         if any(':' in prop for prop in link):
             raise ValueError("Colons are forbidden in tags or entity names.")
 
