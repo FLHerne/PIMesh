@@ -1,47 +1,42 @@
-turnip
-======
-category: vegetables
-
-vegetables
-==========
-category of: turnip
-category of: cabbage
-category of: potato
-
 cabbage
 =======
-category: vegetables
 colour: green
-
-potato
-======
-category: vegetables
-colour: yellow
+category: plant
 
 green
 =====
 colour of: cabbage
 colour of: grass
+category: colour
+
+potato
+======
+colour: yellow
+category: plant
 
 yellow
 ======
 colour of: potato
 colour of: sun
+category: colour
 
 grass
 =====
 colour: green
 eaten by: sheep
 depends on: sun
+category: plant
 
 sun
 ===
 colour: yellow
 depends on of: grass
+category: celestial body
 
 sheep
 =====
 eaten by of: grass
+category: animal
 
 smile
 =====
@@ -50,10 +45,12 @@ owner: cheshire cat
 cheshire cat
 ============
 owner of: smile
+category: animal
 
 dormouse
 ========
 lives in: teapot :contains
+category: animal
 
 teapot
 ======
@@ -64,8 +61,36 @@ moon
 made of: cheese :makes up
 example: moon
 example of: moon
+category: celestial body
 
 cheese
 ======
 makes up: moon :made of
+
+plant
+=====
+category of: cabbage
+category of: turnip
+category of: grass
+category of: potato
+
+turnip
+======
+category: plant
+
+animal
+======
+category of: sheep
+category of: cheshire cat
+category of: dormouse
+
+celestial body
+==============
+category of: sun
+category of: moon
+
+colour
+======
+category of: green
+category of: yellow
 
