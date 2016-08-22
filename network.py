@@ -20,26 +20,56 @@ def unique(sequence):
             output.append(value)
     return output
 
+
 class Network:
     @staticmethod
     def reciprocal(tag):
+        """Converts 'Foo:' to 'Foo of:' and vice versa.
+
+        FIXME: Really shouldn't be hardcoded here."""
         if tag[-3:] == " of":
             return tag[:-3]
         else:
             return tag + " of"
 
     def __init__(self, links=[], filter=Link()):
+        """Create a network containing all links in `links` that match `filter`.
+
+        Network() with no arguments will create a new empty network.
+        `links` must be sorted.
+        This doesn't copy `links`; the network will reflect later changes.
+        """
         self._all_links = links
         self.filter = filter
 
     def __len__(self):
+        """Number of links in this network."""
         return len(tuple(self._matching_links()))
 
     def __iter__(self):
+        """Iterate over links in this network.
+
+        `for link in network`. Sorted by origin then tag, target, inverse_tag.
+        """
         return iter(self._matching_links())
 
     def __getitem__(self, key):
-        """Get subnetwork of links that match args"""
+        """Get the nth link, or the subnetwork of links meeting some conditions.
+
+        Arguments can be either:
+         * An integer `n`: return the `n`th link, sorted as in __iter__().
+            e.g. `network[5]` or `network[-2]`
+
+         * A Link object, where some properties may be undefined or `...`:
+            Return the subnetwork of links that match all defined properties.
+            e.g. `network[Link(tag="Foo")]` -> network of links that:
+             - Are in this network.
+             - Have the tag "Foo".
+         * A tuple of up to four strings:
+            Same as a Link object. `...` elements are placeholders.
+            Ordered (origin, tag, target, inverse_tag)
+         * Up to four string arguments: ditto.
+        """
         if isinstance(key, int):
             return tuple(self._matching_links())[key]
 
@@ -50,15 +80,20 @@ class Network:
             if new in (..., None):
                 return current
             elif current not in (..., None, new):
-                raise ValueError("Incompatible parameter")
+                raise ValueError("Incompatible parameter") # FIXME return empty?
             return new
 
         new_filter = Link(*map(combine_params, self.filter, key))
+        # FIXME can get links not in this network?!
 
         return Network(self._all_links, new_filter)
 
     def addlink(self, *args):
-        """Add link, as Link or separate args"""
+        """Add a link. Takes a Link object or separate strings.
+
+        Order (origin, tag, target, inverse_tag) as usual.
+        N.B this affects all parent networks.
+        """
         link = args[0] if len(args) == 1 else Link(*args)
 
         for n, implicit_prop in enumerate(self.filter):
@@ -78,7 +113,7 @@ class Network:
         self._all_links.sort()
 
     def unlink(self, *args):
-        """Remove all links in self[args]"""
+        """Remove all links in `self[args]`."""
         if len(args) == 1 and isinstance(args[0], int):
             args = args[0]
         to_unlink = self[args]
@@ -94,7 +129,7 @@ class Network:
                 continue
 
     def relink(self, old, new):
-        """Replace old (Link) with new (Link)"""
+        """Replace old (Link object) with new (Link object)."""
         self.addlink(new)
         try:
             self.unlink(old)
@@ -111,19 +146,23 @@ class Network:
     # vvv Repetitive
     @property
     def origins(self):
+        """Unique, alphabetical list of link origins in this network."""
         # Sorted already, because first element in link.
         return unique(link.origin for link in self)
 
     @property
     def tags(self):
+        """Unique, alphabetical list of link tags in this network."""
         return sorted(unique(link.tag for link in self))
 
     @property
     def targets(self):
+        """Unique, alphabetical list of link targets in this network."""
         return sorted(unique(link.target for link in self))
 
     @property
     def inverse_tags(self):
+        """Unique, alphabetical list of link inverse_tags in this network."""
         return sorted(unique(link.inverse_tag for link in self))
 
     @classmethod
@@ -172,7 +211,7 @@ class Network:
         return new_net
 
     def to_file(self, file):
-        """Save the network to a file."""
+        """Save the network to `file.`"""
         file.truncate()
         for origin in self.origins:
             file.write(origin + "\n")
@@ -185,6 +224,7 @@ class Network:
             file.write("\n")
 
     def _matching_links(self):
+        """Weird internal nonsense."""
         def matches(link):
             return all(filter_param in (link_param, ...) for
                        filter_param, link_param in zip(self.filter, link))
