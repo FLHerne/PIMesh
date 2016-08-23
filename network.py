@@ -1,5 +1,6 @@
 from collections import namedtuple
 from enum import Enum
+from itertools import zip_longest
 
 
 Link = namedtuple('Link', ('origin', 'tag', 'target', 'inverse_tag'))
@@ -10,6 +11,20 @@ def __link_inverse(self):
     return Link(self.target, self.inverse_tag, self.origin, self.tag)
 
 Link.inverse = __link_inverse
+
+def __link_combined(self, other, replace):
+    """Combine two links. Don't use this."""
+    out = []
+    for current, new in zip_longest(self, other, fillvalue=...):
+        if new != ...:
+            if not replace and current not in (..., new):
+                raise ValueError("Incompatible parameter")
+            out.append(new)
+        else:
+            out.append(current)
+    return Link(*out)
+
+Link._combined = __link_combined
 
 
 def unique(sequence):
@@ -76,15 +91,7 @@ class Network:
         if not isinstance(key, tuple):
             key = (key,)  # Python doesn't tupleifiy a single argument.
 
-        def combine_params(current, new):
-            if new in (..., None):
-                return current
-            elif current not in (..., None, new):
-                raise ValueError("Incompatible parameter") # FIXME return empty?
-            return new
-
-        new_filter = Link(*map(combine_params, self.filter, key))
-        # FIXME can get links not in this network?!
+        new_filter = self.filter._combined(key, replace=False)
 
         return Network(self._all_links, new_filter)
 
@@ -96,9 +103,7 @@ class Network:
         """
         link = args[0] if len(args) == 1 else Link(*args)
 
-        for n, implicit_prop in enumerate(self.filter):
-            if link[n] == ...:
-                link[n] = implicit_prop
+        link = self.filter._combined(link, replace=True)
 
         if ... in link:
             raise ValueError("Link not fully specified!")
@@ -224,7 +229,7 @@ class Network:
             file.write("\n")
 
     def _matching_links(self):
-        """Weird internal nonsense."""
+        """Links that are really in this network (match `self.filter`)"""
         def matches(link):
             return all(filter_param in (link_param, ...) for
                        filter_param, link_param in zip(self.filter, link))
