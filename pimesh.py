@@ -6,30 +6,33 @@ from network import Network
 from cliui import UI
 
 try:
-  filename = sys.argv[1]
-  try:
-      networkfile = open(filename, 'r+')
-      network = Network.from_file(networkfile)         # Note that this does not (and should not) create a new file
-      print("Loaded PIMesh network from file")
-  except FileNotFoundError:
-      network = Network()
-      print("Created empty network (file not found)")
+    filename = sys.argv[1]
+    try:
+        networkfile = open(filename, 'r+')
+        # Note that this does not (and should not) create a new file
+        network = Network.from_file(networkfile)
+        print("Loaded PIMesh network from file")
+    except FileNotFoundError:
+        networkfile = open(filename, 'w')
+        network = Network()
+        print("Created empty network (file not found)")
 
-  ui = UI(network)
+    ui = UI(network)
 
-  try:
-      ui.run()
-  except KeyboardInterrupt:
-      print("Caught leopard interrupt")
-      
-  try:
-      network.to_file(networkfile)
-      print("Saved session changes to file.")
-  except:
-      print("Saving to file failed!")
-     
+    try:
+        ui.run()
+    except KeyboardInterrupt:
+        print("Caught leopard interrupt")
+
+    networkfile.truncate(0)  # FIXME: Really bad if the next bit fails!
+    try:
+        network.to_file(networkfile)
+        print("Saved session changes to file.")
+    except:
+        print("Saving to file failed!")
+
 except IndexError:
-  print("Please specify filename as first argument.")
-    
+    print("Please specify filename as first argument.")
+
 print("PIMesh quitting...")
 
