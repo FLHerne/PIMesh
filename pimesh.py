@@ -24,12 +24,14 @@ try:
     except KeyboardInterrupt:
         print("Caught leopard interrupt")
 
-    networkfile.truncate(0)  # FIXME: Really bad if the next bit fails!
+    networkfile.seek(0)
     try:
         network.to_file(networkfile)
+        networkfile.truncate()
         print("Saved session changes to file.")
     except:
         print("Saving to file failed!")
+    networkfile.close()
 
 except IndexError:
     print("Please specify filename as first argument.")
