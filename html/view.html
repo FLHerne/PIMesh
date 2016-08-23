@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-GB"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <title>PIMesh - View {{ name }}</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 20px;
+    }
+    table {
+      border-collapse: collapse;
+    }
+    table, td, th {
+      border: 1px solid black;
+      padding: 4px;
+    }
+    td {
+      text-align: right;
+    }
+    td:first-child {
+      text-align: initial;
+    }
+    th {
+      background: lightgray;
+    }
+  </style>
+</head>
+<body>
+  <h1><a href="/list">List</a> &gt; View {{ name }}</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Tag</th>
+        <th>Target</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for link in links %}
+      <tr>
+        <td>{{ link.tag }}</td>
+        <td>
+          <a href="/view/{{ link.target | urlencode }}">{{ link.target }}</a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
