@@ -5,13 +5,15 @@
 <head>
   <meta charset="UTF-8" />
   <title>PIMesh - List</title>
-  <link rel="stylesheet" type="text/css" href="/static/pimesh.css">
+  <link rel="stylesheet" type="text/css" href="/static/pimesh.css" />
 </head>
 
 <body>
-  <h1>List</h1>
-  <a href="/plain">Download plain</a>
-  <table>
+<form method="post">
+  <h2>List</h2>
+  <a href="/plain">Download plain</a><br />
+
+  <table id="list">
     <thead>
       <tr>
         <th>Entity</th>
@@ -19,6 +21,10 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><input type="text" name="view" /></td>
+        <td><input type="submit" value="New/Goto" /></td>
+      </tr>
     {% for entity in entities %}
       <tr>
         <td>
@@ -29,5 +35,7 @@
     {% endfor %}
     </tbody>
   </table>
+
+</form>
 </body>
 </html>

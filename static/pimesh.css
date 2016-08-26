@@ -10,7 +10,7 @@ table, td, th {
     border: 1px solid black;
     padding: 4px;
 }
-td {
+td #list {
     text-align: right;
 }
 td:first-child {

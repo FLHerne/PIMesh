@@ -5,16 +5,19 @@
 <head>
   <meta charset="UTF-8" />
   <title>PIMesh - View {{ name }}</title>
-  <link rel="stylesheet" type="text/css" href="/static/pimesh.css">
+  <link rel="stylesheet" type="text/css" href="/static/pimesh.css" />
 </head>
 
 <body>
-  <h1><a href="/list">List</a> &gt; View {{ name }}</h1>
+<form method="post">
+  <h2><a href="/list">List</a> &gt; View {{ name }}</h2>
+
   <table>
     <thead>
       <tr>
         <th>Tag</th>
         <th>Target</th>
+        <th>Inverse tag</th>
       </tr>
     </thead>
     <tbody>
@@ -24,9 +27,18 @@
         <td>
           <a href="/view/{{ link.target | urlencode }}">{{ link.target }}</a>
         </td>
+        <td>{{ link.inverse_tag }}</td>
       </tr>
     {% endfor %}
+      <tr>
+        <td><input type="text" name="tag" /></td>
+        <td><input type="text" name="target" /></td>
+        <td><input type="text" name="inverse_tag" /></td>
+      </tr>
     </tbody>
   </table>
+
+  <input type="submit" value="Add link" />
+</form>
 </body>
 </html>
