@@ -66,7 +66,6 @@ def application(env, start_response):
         except:
             status = "400 Bad Request"
             body = "Broken form submission"
-            raise
 
     elif cmd == "view" and arg:
         body = tpl_view.render(name=arg, links=net[arg])
