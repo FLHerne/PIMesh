@@ -43,12 +43,11 @@ def application(env, start_response):
         try:
             view_entity = parse_qs(request_body)['view'][0]
             new_url = '/view/%s' %quote(view_entity)
-            status = "303 See Other"
-            headers.append(('Location', new_url))
-            body = '<a href="%s">Redirect</a>' %new_url
         except:
-            status = "400 Bad Request"
-            body = "Broken form submission"
+            new_url = '/list'
+        status = "303 See Other"
+        headers.append(('Location', new_url))
+        body = '<a href="%s">Redirect</a>' %new_url
 
     elif cmd == "view" and arg and env['REQUEST_METHOD'] == 'POST':
         try:
@@ -62,10 +61,9 @@ def application(env, start_response):
                 raise ValueError()
             net.addlink(arg, tag, target, inverse_tag)
             status = "200 OK"
-            body = tpl_view.render(name=arg, links=net[arg])
         except:
             status = "400 Bad Request"
-            body = "Broken form submission"
+        body = tpl_view.render(name=arg, links=net[arg])
 
     elif cmd == "view" and arg:
         body = tpl_view.render(name=arg, links=net[arg])
